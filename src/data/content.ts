@@ -37,7 +37,7 @@ export const profile = {
   phone: "(919) 244-6399",
   linkedin: "https://linkedin.com/in/sophial25",
   github: "https://github.com/leshoya",
-  resume: "/resume-sophia-lee.pdf",
+  resume: "resume-sophia-lee.pdf",
   education: {
     school: "Duke University",
     location: "Durham, NC",

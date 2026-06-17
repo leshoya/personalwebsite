@@ -1,20 +1,21 @@
 import { motion } from "framer-motion";
 import { profile } from "../data/content";
 import { KoiIllustration } from "./KoiIllustration";
+import { publicPath } from "../lib/publicPath";
 
 const gallery = [
   {
-    src: "/images/presenting.png",
+    src: publicPath("images/presenting.png"),
     alt: "Sophia Lee presenting to a group",
     caption: "Leading & presenting",
   },
   {
-    src: "/images/nc-workshop.png",
+    src: publicPath("images/nc-workshop.png"),
     alt: "Sophia Lee at NC Department of Administration workshop",
     caption: "NC Lady Cardinal Mentorship",
   },
   {
-    src: "/images/team-skyline.png",
+    src: publicPath("images/team-skyline.png"),
     alt: "Sophia Lee with peers at a skyline office",
     caption: "Collaborating with teams",
   },
@@ -78,12 +79,12 @@ export function About() {
         >
           <div className="about__image-stack">
             <img
-              src="/images/duke-chapel.png"
+              src={publicPath("images/duke-chapel.png")}
               alt="Duke University Chapel at dusk"
               className="about__chapel"
             />
             <img
-              src="/images/award.png"
+              src={publicPath("images/award.png")}
               alt="Sophia Lee receiving NCWIT Award"
               className="about__award"
             />

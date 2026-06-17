@@ -4,6 +4,7 @@ import { LeafReveal } from "./LeafReveal";
 import { NameReveal } from "./NameReveal";
 import { RotatingTagline } from "./RotatingTagline";
 import { useParallaxTilt } from "../hooks/useParallaxTilt";
+import { publicPath } from "../lib/publicPath";
 
 export function Hero() {
   const portrait = useParallaxTilt(10);
@@ -30,7 +31,7 @@ export function Hero() {
             <a href="#projects" className="btn btn--primary">
               View Projects
             </a>
-            <a href="/resume-sophia-lee.pdf" target="_blank" rel="noopener noreferrer" className="btn btn--ghost">
+            <a href={publicPath(profile.resume)} target="_blank" rel="noopener noreferrer" className="btn btn--ghost">
               Download Resume
             </a>
             <a href="#contact" className="btn btn--ghost">
@@ -49,7 +50,7 @@ export function Hero() {
           transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="hero__portrait-frame">
-            <img src="/images/headshot.png" alt="Sophia Lee" className="hero__portrait" />
+            <img src={publicPath("images/headshot.png")} alt="Sophia Lee" className="hero__portrait" />
             <div className="hero__portrait-ring" aria-hidden="true" />
             <div className="hero__portrait-shimmer" aria-hidden="true" />
           </div>
