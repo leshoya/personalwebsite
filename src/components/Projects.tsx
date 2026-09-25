@@ -3,7 +3,7 @@ import { projects } from "../data/content";
 import type { Project } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { Section } from "./Section";
-import { Donut, Dots, Record, RingStack, Target } from "./Shapes";
+import { Donut, Dots, Record, RingStack, Star, StarCluster, Target } from "./Shapes";
 
 /** A different shape composition for each featured project's cover. */
 const covers = [
@@ -31,6 +31,43 @@ const covers = [
   ),
 ];
 
+/** Background decor kept to the margins and the space beside the heading, clear of the cards. */
+function ProjectsArt() {
+  return (
+    <svg
+      className="panel__art"
+      viewBox="0 0 1200 1600"
+      preserveAspectRatio="xMidYMin slice"
+      aria-hidden="true"
+    >
+      <circle cx="1210" cy="1540" r="120" fill="none" stroke="#b6c3f0" strokeWidth="2.5" />
+      <Donut x={-10} y={1590} r={70} paint="url(#g-coral)" />
+      <RingStack x={-30} y={60} r={70} stroke="#fbcab8" />
+      <Dots x={30} y={420} cols={1} rows={3} gap={16} />
+      <Dots x={1120} y={1180} cols={2} rows={2} />
+
+      <g className="float float--alt">
+        <StarCluster x={960} y={140} size={1.6} />
+      </g>
+      <g className="float">
+        <Star x={1150} y={880} kind="big" size={1.1} rotate={14} />
+      </g>
+      <g className="float float--slow">
+        <Star x={55} y={1120} kind="small" size={1.6} rotate={-10} />
+      </g>
+      <g className="twinkle">
+        <Star x={740} y={95} kind="sparkle" size={2.4} />
+      </g>
+      <g className="twinkle twinkle--late">
+        <Star x={50} y={700} kind="sparkle" size={2.2} />
+      </g>
+      <g className="twinkle">
+        <Star x={1160} y={1400} kind="sparkle" size={2} />
+      </g>
+    </svg>
+  );
+}
+
 function ExternalLink({ project }: { project: Project }) {
   if (!project.link) return null;
   return (
@@ -53,7 +90,7 @@ export function Projects() {
   const other = projects.filter((p) => !p.featured);
 
   return (
-    <Section id="projects" eyebrow="projects" title="things i've built." dark>
+    <Section id="projects" eyebrow="projects" title="things i've built!" dark art={<ProjectsArt />}>
       <div className="cards">
         {featured.map((project, i) => {
           const Cover = covers[i % covers.length];

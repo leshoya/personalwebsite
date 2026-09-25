@@ -212,7 +212,7 @@ export const projects: Project[] = [
   {
     id: "mutual-fund",
     title: "Mutual Fund Decision Platform",
-    org: "Duke University · Group 10",
+    org: "Goldman Sachs",
     description:
       "Full-stack investment dashboard with FastAPI and Angular. CAPM and 5,000-run Monte Carlo simulations return full outcome distributions; Plotly.js charts show median and 10th/90th percentile scenarios. Includes a multi-scenario market simulator and AI tools to unify fragmented financial resources.",
     tags: ["FastAPI", "Angular", "Python", "Plotly.js", "Monte Carlo"],

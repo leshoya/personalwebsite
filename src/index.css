@@ -859,6 +859,7 @@ strong {
 /* ─── Motion ─── */
 .spin,
 .float,
+.twinkle,
 .card__art {
   transform-box: fill-box;
   transform-origin: center;
@@ -887,9 +888,24 @@ strong {
   animation-delay: -3s;
 }
 
+.twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.twinkle--late {
+  animation-delay: -1.5s;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes twinkle {
+  50% {
+    transform: scale(0.7);
+    opacity: 0.6;
   }
 }
 

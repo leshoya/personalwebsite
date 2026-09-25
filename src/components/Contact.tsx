@@ -1,7 +1,7 @@
 import { profile } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { KoiPair } from "./Koi";
-import { Donut, Dots, RingStack } from "./Shapes";
+import { Donut, Dots, RingStack, Star } from "./Shapes";
 
 function ContactArt() {
   return (
@@ -29,6 +29,12 @@ function ContactArt() {
       />
       <Dots x={1100} y={420} cols={3} />
       <Dots x={690} y={60} cols={2} />
+      <g className="twinkle">
+        <Star x={620} y={120} kind="sparkle" size={2.2} />
+      </g>
+      <g className="twinkle twinkle--late">
+        <Star x={160} y={420} kind="sparkle" size={1.8} />
+      </g>
     </svg>
   );
 }
