@@ -1,12 +1,39 @@
 import { projects } from "../data/content";
 import type { Project } from "../data/content";
 import { Section } from "./Section";
+import { Donut, Dots, Record, RingStack, Target } from "./Shapes";
 
-function ProjectTitle({ project }: { project: Project }) {
-  if (!project.link) return <>{project.title}</>;
+/** A different shape composition for each featured project's cover. */
+const covers = [
+  () => (
+    <>
+      <Record x={250} y={110} r={120} />
+      <Donut x={70} y={50} r={34} paint="url(#g-coral)" />
+      <Dots x={40} y={160} cols={3} />
+    </>
+  ),
+  () => (
+    <>
+      <RingStack x={100} y={210} r={115} />
+      <RingStack x={235} y={210} r={115} stroke="#fbcab8" />
+      <Target x={300} y={50} r={30} />
+      <Dots x={36} y={36} cols={2} rows={2} />
+    </>
+  ),
+  () => (
+    <>
+      <Donut x={110} y={105} r={80} />
+      <Target x={265} y={120} r={58} />
+      <Dots x={270} y={26} cols={3} fill="#f4a896" />
+    </>
+  ),
+];
+
+function ExternalLink({ project }: { project: Project }) {
+  if (!project.link) return null;
   return (
-    <a href={project.link} target="_blank" rel="noopener noreferrer" className="link-out">
-      {project.title}
+    <a href={project.link} target="_blank" rel="noopener noreferrer" className="card__link">
+      View project
       <svg viewBox="0 0 12 12" aria-hidden="true">
         <path d="M3.5 8.5l5-5M4.5 3.5h4v4" />
       </svg>
@@ -19,38 +46,48 @@ export function Projects() {
   const other = projects.filter((p) => !p.featured);
 
   return (
-    <Section id="projects" title="Projects">
-      <ol className="entries">
-        {featured.map((project) => (
-          <li key={project.id} className="entry">
-            <div className="entry__head">
-              <h3 className="entry__title">
-                <ProjectTitle project={project} />
-                <span className="entry__org">{project.org}</span>
-              </h3>
-            </div>
-            <p className="entry__desc">{project.description}</p>
-            <p className="entry__tags">{project.tags.join(" · ")}</p>
-          </li>
-        ))}
-      </ol>
+    <Section id="projects" eyebrow="Projects" title="Things I've built." dark>
+      <div className="cards">
+        {featured.map((project, i) => {
+          const Cover = covers[i % covers.length];
+          return (
+            <article key={project.id} className="card">
+              <svg
+                className="card__cover"
+                viewBox="0 0 340 200"
+                preserveAspectRatio="xMidYMid slice"
+                aria-hidden="true"
+              >
+                <Cover />
+              </svg>
+              <div className="card__body">
+                <p className="card__org">{project.org}</p>
+                <h3 className="card__title">{project.title}</h3>
+                <p className="card__desc">{project.description}</p>
+                <p className="card__tags">{project.tags.join(" · ")}</p>
+                <ExternalLink project={project} />
+              </div>
+            </article>
+          );
+        })}
+      </div>
 
-      <h3 className="subhead">More projects</h3>
-      <ul className="compact">
+      <h3 className="more__title">More projects</h3>
+      <ul className="more">
         {other.map((project) => (
-          <li key={project.id} className="compact__item">
-            <div className="compact__head">
-              <span className="compact__title">
-                <ProjectTitle project={project} />
-              </span>
-              <span className="compact__org">{project.org}</span>
-            </div>
-            <p className="compact__desc">
-              {project.description}
-              {project.metrics && (
-                <span className="compact__metrics"> {project.metrics.join(", ")}.</span>
+          <li key={project.id} className="more__item">
+            <p className="more__org">{project.org}</p>
+            <h4 className="more__name">
+              {project.link ? (
+                <a href={project.link} target="_blank" rel="noopener noreferrer">
+                  {project.title}
+                </a>
+              ) : (
+                project.title
               )}
-            </p>
+            </h4>
+            <p className="more__desc">{project.description}</p>
+            {project.metrics && <p className="more__metrics">{project.metrics.join(" · ")}</p>}
           </li>
         ))}
       </ul>
