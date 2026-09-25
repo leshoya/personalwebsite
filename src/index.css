@@ -300,7 +300,7 @@ strong {
 }
 
 .section__title-art--lg {
-  width: clamp(4.5rem, 9vw, 7.5rem);
+  width: clamp(4rem, 8vw, 6.5rem);
 }
 
 .section__title-art--flip {
