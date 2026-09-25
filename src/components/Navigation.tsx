@@ -12,11 +12,11 @@ export function Navigation() {
     <nav className="nav" aria-label="Primary">
       <a href="#top" className="nav__brand">
         <img
-          src={publicPath("images/badge.png")}
+          src={publicPath("images/snoopy-filled.png")}
           alt=""
           className="nav__badge"
-          width={256}
-          height={256}
+          width={696}
+          height={689}
         />
         {profile.name}
       </a>

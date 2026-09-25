@@ -165,10 +165,8 @@ strong {
 }
 
 .nav__badge {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px var(--water-light);
+  width: 3.25rem;
+  height: auto;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
