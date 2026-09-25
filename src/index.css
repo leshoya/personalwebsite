@@ -1,12 +1,13 @@
 /* ─── Tokens ─── */
 :root {
-  --bg: #fbfbfd;
-  --fg: #16163a;
-  --fg-2: #3d3d5c;
-  --muted: #6e6d8f;
-  --line: #e6e5f0;
-  --accent: #5a52d5;
-  --accent-soft: #a7a2ff;
+  --bg: #f7fafb;
+  --fg: #2a4050;
+  --fg-2: #435a69;
+  --muted: #5f7584;
+  --line: #dde8ed;
+  --accent: #5a8499;
+  --accent-soft: #a8cfe0;
+  --coral: #e8927c;
 
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -22,13 +23,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #12122a;
-    --fg: #eeedff;
-    --fg-2: #c3c2e0;
-    --muted: #8e8cb8;
-    --line: #26264a;
-    --accent: #aaa5ff;
-    --accent-soft: #6d66e8;
+    --bg: #0f191f;
+    --fg: #e8f1f5;
+    --fg-2: #c0d2db;
+    --muted: #8aa4b2;
+    --line: #1f313c;
+    --accent: #a8cfe0;
+    --accent-soft: #3f6376;
+    --coral: #f4a896;
     color-scheme: dark;
   }
 }
@@ -166,7 +168,7 @@ a {
 }
 
 .nav__mark circle:last-child {
-  fill: var(--accent);
+  fill: var(--coral);
   stroke: none;
 }
 
@@ -203,7 +205,7 @@ a {
 }
 
 .hero__rings .hero__rings-dot {
-  fill: var(--accent);
+  fill: var(--coral);
   stroke: none;
 }
 

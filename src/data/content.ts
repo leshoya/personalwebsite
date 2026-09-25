@@ -17,6 +17,7 @@ export interface Experience {
   period: string;
   location?: string;
   highlights: string[];
+  earlier?: boolean;
 }
 
 export interface Honor {
@@ -32,7 +33,7 @@ export const profile = {
   chineseName: "李舒雅",
   tagline: "Software & AI Engineer",
   subtitle:
-    "Building intelligent systems at the intersection of healthcare, enterprise software, and human-centered design.",
+    "I build full-stack products and machine learning systems, most recently enterprise software at MetLife and healthcare ML with MIT.",
   email: "lee.c.sophia@gmail.com",
   phone: "(919) 244-6399",
   linkedin: "https://linkedin.com/in/sophial25",
@@ -46,7 +47,7 @@ export const profile = {
       {
         id: "yc-summer-school",
         title: "YC Summer School",
-        issuer: "YC Combinator",
+        issuer: "Y Combinator",
         date: "May 2026",
       },
       {
@@ -164,6 +165,7 @@ export const experiences: Experience[] = [
   },
   {
     id: "gwc",
+    earlier: true,
     role: "Data Science Alumni",
     company: "Girls Who Code",
     period: "June 2023 – September 2023",
@@ -176,6 +178,7 @@ export const experiences: Experience[] = [
   },
   {
     id: "gwc-kwk",
+    earlier: true,
     role: "Web Development Scholar",
     company: "Kode With Klossy",
     period: "June 2022 – September 2022",
@@ -187,6 +190,7 @@ export const experiences: Experience[] = [
   },
   {
     id: "biogen-mit",
+    earlier: true,
     role: "Biogen–MIT Biotech in Action",
     company: "Lemelson-MIT Program",
     period: "June 2022 – September 2022",
