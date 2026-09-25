@@ -1,11 +1,9 @@
 import { useRef } from "react";
-import type { PointerEvent } from "react";
 import { profile } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { Navigation } from "./Navigation";
 import { Donut, Dots, Record, RingStack, Target } from "./Shapes";
 
-/** Layers move different amounts with the pointer (see .layer in CSS) for a parallax effect. */
 function HeroArt() {
   return (
     <svg
@@ -14,7 +12,7 @@ function HeroArt() {
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
     >
-      <g className="layer layer--back">
+      <g>
         {/* Lighter blob behind the headline, dark field top right */}
         <path
           d="M0 0H650C610 130 600 250 480 285C390 312 300 285 250 370C200 455 240 575 0 610Z"
@@ -25,7 +23,7 @@ function HeroArt() {
         <circle cx="450" cy="-10" r="58" fill="#6876b6" />
       </g>
 
-      <g className="layer layer--mid">
+      <g>
         <RingStack x={-10} y={215} r={66} />
         <RingStack x={20} y={305} r={52} stroke="#fbcab8" />
         <RingStack x={880} y={-38} r={80} />
@@ -40,18 +38,16 @@ function HeroArt() {
         <circle cx="1205" cy="600" r="118" fill="none" stroke="#b6c3f0" strokeWidth="2.5" />
         <circle cx="1205" cy="600" r="72" fill="none" stroke="url(#g-coral)" strokeWidth="26" />
 
-        <g className="twinkle">
-          <Dots x={560} y={175} cols={2} />
-          <Dots x={1125} y={210} cols={1} rows={2} gap={16} />
-          <Dots x={170} y={660} cols={3} />
-        </g>
+        <Dots x={560} y={175} cols={2} />
+        <Dots x={1125} y={210} cols={1} rows={2} gap={16} />
+        <Dots x={170} y={660} cols={3} />
         <Dots x={680} y={175} cols={1} />
         <Dots x={1112} y={660} cols={3} rows={2} />
         <Dots x={120} y={660} cols={1} />
         <Dots x={255} y={30} cols={2} fill="#1c223e" />
       </g>
 
-      <g className="layer layer--front">
+      <g>
         <g className="float">
           <Target x={720} y={330} r={78} />
         </g>
@@ -107,30 +103,8 @@ function SpotifyRecord() {
 }
 
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
-
-  const onPointerMove = (e: PointerEvent<HTMLElement>) => {
-    if (e.pointerType !== "mouse" || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    const my = ((e.clientY - rect.top) / rect.height) * 2 - 1;
-    ref.current.style.setProperty("--mx", mx.toFixed(3));
-    ref.current.style.setProperty("--my", my.toFixed(3));
-  };
-
-  const onPointerLeave = () => {
-    ref.current?.style.setProperty("--mx", "0");
-    ref.current?.style.setProperty("--my", "0");
-  };
-
   return (
-    <header
-      className="panel hero"
-      id="top"
-      ref={ref}
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
-    >
+    <header className="panel hero" id="top">
       <HeroArt />
       <Navigation />
       <div className="hero__content">

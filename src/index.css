@@ -788,24 +788,6 @@ strong {
 }
 
 /* ─── Motion ─── */
-/* Pointer parallax: --mx / --my (-1 to 1) are set on .hero by Hero.tsx */
-.layer {
-  transform: translate(calc(var(--mx, 0) * var(--depth)), calc(var(--my, 0) * var(--depth)));
-  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.layer--back {
-  --depth: 0px;
-}
-
-.layer--mid {
-  --depth: -14px;
-}
-
-.layer--front {
-  --depth: 26px;
-}
-
 .spin,
 .float,
 .card__art {
@@ -836,14 +818,6 @@ strong {
   animation-delay: -4s;
 }
 
-.twinkle circle {
-  animation: twinkle 3.2s ease-in-out infinite;
-}
-
-.twinkle circle:nth-child(2n) {
-  animation-delay: -1.6s;
-}
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -852,13 +826,7 @@ strong {
 
 @keyframes float {
   50% {
-    transform: translateY(-12px);
-  }
-}
-
-@keyframes twinkle {
-  50% {
-    opacity: 0.25;
+    transform: translateY(-6px);
   }
 }
 
@@ -1048,7 +1016,4 @@ strong {
     transition: none !important;
   }
 
-  .layer {
-    transform: none;
-  }
 }
