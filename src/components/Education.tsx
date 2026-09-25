@@ -11,44 +11,44 @@ export function Education() {
   const { education } = profile;
 
   return (
-    <>
-      <Section id="education" title="Education">
-        <div className="entry__head">
-          <h3 className="entry__title">
-            {education.school}
-            <span className="entry__org">{education.degree}</span>
-          </h3>
-          <span className="entry__date">{education.location}</span>
+    <Section id="education" eyebrow="Education & recognition" title="Background.">
+      <div className="background">
+        <div>
+          <div className="edu">
+            <h3 className="edu__school">{education.school}</h3>
+            <p className="edu__degree">{education.degree}</p>
+            <p className="edu__courses">
+              <span>Coursework</span>
+              {education.courses.join(", ")}
+            </p>
+          </div>
+
+          <h3 className="col__title">Skills</h3>
+          <dl className="skills">
+            {skillGroups.map((group) => (
+              <div key={group.label} className="skills__row">
+                <dt>{group.label}</dt>
+                <dd>{group.items.join(", ")}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <p className="entry__desc">
-          <span className="label">Coursework</span>
-          {education.courses.join(", ")}
-        </p>
-      </Section>
 
-      <Section id="honors" title="Honors">
-        <ul className="rows">
-          {education.honors.map((honor) => (
-            <li key={honor.id} className="row">
-              <span className="row__main">
-                {honor.title}, <span className="row__muted">{honor.issuer}</span>
-              </span>
-              <span className="row__date">{honor.date}</span>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section id="skills" title="Skills">
-        <dl className="defs">
-          {skillGroups.map((group) => (
-            <div key={group.label} className="defs__row">
-              <dt>{group.label}</dt>
-              <dd>{group.items.join(", ")}</dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
-    </>
+        <div>
+          <h3 className="col__title">Honors</h3>
+          <ul className="honors">
+            {education.honors.map((honor) => (
+              <li key={honor.id} className="honors__item">
+                <span className="honors__date">{honor.date}</span>
+                <span>
+                  <strong>{honor.title}</strong>
+                  <span className="honors__issuer">{honor.issuer}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Section>
   );
 }

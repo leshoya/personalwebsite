@@ -6,18 +6,15 @@ export function Experience() {
   const earlier = experiences.filter((e) => e.earlier);
 
   return (
-    <Section id="experience" title="Experience">
-      <ol className="entries">
+    <Section id="experience" eyebrow="Experience" title="Where I've worked.">
+      <ol className="timeline">
         {main.map((exp) => (
-          <li key={exp.id} className="entry">
-            <div className="entry__head">
-              <h3 className="entry__title">
-                {exp.role}
-                <span className="entry__org">{exp.company}</span>
-              </h3>
-              <span className="entry__date">{exp.period}</span>
-            </div>
-            <ul className="entry__list">
+          <li key={exp.id} className="timeline__item">
+            <span className="timeline__node" aria-hidden="true" />
+            <p className="timeline__period">{exp.period}</p>
+            <h3 className="timeline__role">{exp.role}</h3>
+            <p className="timeline__company">{exp.company}</p>
+            <ul className="timeline__list">
               {exp.highlights.map((h) => (
                 <li key={h}>{h}</li>
               ))}
@@ -26,17 +23,19 @@ export function Experience() {
         ))}
       </ol>
 
-      <h3 className="subhead">Earlier</h3>
-      <ul className="rows">
-        {earlier.map((exp) => (
-          <li key={exp.id} className="row">
-            <span className="row__main">
-              {exp.role}, <span className="row__muted">{exp.company}</span>
-            </span>
-            <span className="row__date">{exp.period.match(/\d{4}/)?.[0]}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="earlier">
+        <h3 className="earlier__title">Earlier programs</h3>
+        <ul className="earlier__list">
+          {earlier.map((exp) => (
+            <li key={exp.id}>
+              <span className="earlier__year">{exp.period.match(/\d{4}/)?.[0]}</span>
+              <span>
+                <strong>{exp.role}</strong>, {exp.company}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Section>
   );
 }

@@ -1,4 +1,4 @@
-import { Navigation } from "./components/Navigation";
+import { SvgDefs } from "./components/Shapes";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
 import { Experience } from "./components/Experience";
@@ -9,16 +9,18 @@ import { Contact, Footer } from "./components/Contact";
 export default function App() {
   return (
     <>
-      <Navigation />
-      <main className="page">
+      <SvgDefs />
+      <div className="page">
         <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Education />
-        <Contact />
-      </main>
-      <Footer />
+        <main>
+          <About />
+          <Experience />
+          <Projects />
+          <Education />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }
