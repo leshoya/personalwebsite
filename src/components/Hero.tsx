@@ -71,7 +71,7 @@ function HeroArt() {
         </g>
         <SpotifyRecord />
         <g className="float float--slow">
-          <Donut x={640} y={600} r={92} />
+          <Donut x={675} y={570} r={92} />
         </g>
       </g>
     </svg>
@@ -105,11 +105,11 @@ function SpotifyRecord() {
       onBlur={stop}
     >
       <g className="spin-hover">
-        <Record x={1015} y={455} r={150} />
+        <Record x={975} y={420} r={150} />
       </g>
       <g className="record-caption">
-        <rect x="905" y="262" width="220" height="44" rx="22" fill="#fffbf7" />
-        <text x="1015" y="290" textAnchor="middle">
+        <rect x="865" y="227" width="220" height="44" rx="22" fill="#fffbf7" />
+        <text x="975" y="255" textAnchor="middle">
           hear me out! ♪
         </text>
       </g>

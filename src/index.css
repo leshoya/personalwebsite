@@ -492,6 +492,81 @@ strong {
   border: 2px solid var(--water-deep);
 }
 
+/* Screen-recording demo inside a timeline entry */
+.demo {
+  margin-top: 1.5rem;
+  max-width: 40rem;
+}
+
+.demo__frame {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--navy);
+  box-shadow: 0 24px 40px -20px rgba(35, 42, 74, 0.45);
+}
+
+.demo__bar {
+  display: flex;
+  gap: 0.375rem;
+  padding: 0.625rem 0.875rem;
+}
+
+.demo__bar span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--water-light);
+}
+
+.demo__bar span:first-child {
+  background: var(--coral);
+}
+
+.demo__frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* The recording has ~47px black bars on each side; crop them off */
+  aspect-ratio: 1186 / 720;
+  object-fit: cover;
+  background: #fff;
+}
+
+.demo__caption {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.demo__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+.demo__link svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  fill: none;
+  stroke: var(--coral-deep);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s ease;
+}
+
+.demo__link:hover svg {
+  transform: translate(2px, -2px);
+}
+
 .earlier {
   margin-top: 4.5rem;
   max-width: 52rem;
