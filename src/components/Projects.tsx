@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { projects } from "../data/content";
 import type { Project } from "../data/content";
+import { publicPath } from "../lib/publicPath";
 import { Section } from "./Section";
 import { Donut, Dots, Record, RingStack, Target } from "./Shapes";
 
@@ -33,7 +34,12 @@ const covers = [
 function ExternalLink({ project }: { project: Project }) {
   if (!project.link) return null;
   return (
-    <a href={project.link} target="_blank" rel="noopener noreferrer" className="card__link">
+    <a
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="card__link"
+    >
       View project
       <svg viewBox="0 0 12 12" aria-hidden="true">
         <path d="M3.5 8.5l5-5M4.5 3.5h4v4" />
@@ -52,30 +58,41 @@ export function Projects() {
         {featured.map((project, i) => {
           const Cover = covers[i % covers.length];
           return (
-            <article
+            <div
               key={project.id}
-              className="card"
+              className="card-wrap"
               data-reveal
               style={{ "--i": i } as CSSProperties}
             >
-              <svg
-                className="card__cover"
-                viewBox="0 0 340 200"
-                preserveAspectRatio="xMidYMid slice"
-                aria-hidden="true"
-              >
-                <g className="card__art">
-                  <Cover />
-                </g>
-              </svg>
-              <div className="card__body">
-                <p className="card__org">{project.org}</p>
-                <h3 className="card__title">{project.title}</h3>
-                <p className="card__desc">{project.description}</p>
-                <p className="card__tags">{project.tags.join(" · ")}</p>
-                <ExternalLink project={project} />
-              </div>
-            </article>
+              {project.id === "emerge-ai" && (
+                <img
+                  src={publicPath("images/peek.png")}
+                  alt=""
+                  className="peek"
+                  width={484}
+                  height={748}
+                />
+              )}
+              <article className="card">
+                <svg
+                  className="card__cover"
+                  viewBox="0 0 340 200"
+                  preserveAspectRatio="xMidYMid slice"
+                  aria-hidden="true"
+                >
+                  <g className="card__art">
+                    <Cover />
+                  </g>
+                </svg>
+                <div className="card__body">
+                  <p className="card__org">{project.org}</p>
+                  <h3 className="card__title">{project.title}</h3>
+                  <p className="card__desc">{project.description}</p>
+                  <p className="card__tags">{project.tags.join(" · ")}</p>
+                  <ExternalLink project={project} />
+                </div>
+              </article>
+            </div>
           );
         })}
       </div>
@@ -87,7 +104,11 @@ export function Projects() {
             <p className="more__org">{project.org}</p>
             <h4 className="more__name">
               {project.link ? (
-                <a href={project.link} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {project.title}
                 </a>
               ) : (
@@ -95,7 +116,9 @@ export function Projects() {
               )}
             </h4>
             <p className="more__desc">{project.description}</p>
-            {project.metrics && <p className="more__metrics">{project.metrics.join(" · ")}</p>}
+            {project.metrics && (
+              <p className="more__metrics">{project.metrics.join(" · ")}</p>
+            )}
           </li>
         ))}
       </ul>
