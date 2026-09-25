@@ -538,18 +538,26 @@ strong {
   display: flex;
 }
 
+/*
+ * peek.png (484x748) has a vertical "edge" line at x≈12 starting at y≈230.
+ * Line that up with the card's right edge and top so he peeks out from behind it.
+ */
 .peek {
+  /* Fit in the page margin beside the cards; shrinks on narrower screens */
+  --w: clamp(4rem, calc(max(clamp(1.5rem, 5vw, 5rem), (100vw - 72rem) / 2) - 1rem), 6.5rem);
   position: absolute;
-  z-index: 0;
-  top: -3.75rem;
-  right: 1.75rem;
-  width: 5.5rem;
+  z-index: 2;
+  left: calc(100% - var(--w) * 12 / 484);
+  top: calc(var(--w) * -230 / 484);
+  width: var(--w);
   height: auto;
+  pointer-events: none;
+  transform-origin: 0 60%;
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .card-wrap:hover .peek {
-  transform: translateY(-0.75rem) rotate(-4deg);
+  transform: translateY(-4px) rotate(4deg);
 }
 
 .card {
@@ -986,8 +994,12 @@ strong {
 @media (max-width: 1000px) {
   .cards {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 4.5rem;
     max-width: 34rem;
+  }
+
+  /* Stacked cards leave plenty of room on the right */
+  .peek {
+    --w: 6.5rem;
   }
 
   .more {
@@ -1030,6 +1042,12 @@ strong {
 
   .photos__item:nth-child(3) {
     grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .peek {
+    display: none;
   }
 }
 

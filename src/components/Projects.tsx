@@ -64,7 +64,7 @@ export function Projects() {
               data-reveal
               style={{ "--i": i } as CSSProperties}
             >
-              {project.id === "emerge-ai" && (
+              {project.id === "jamfusion" && (
                 <img
                   src={publicPath("images/peek.png")}
                   alt=""
