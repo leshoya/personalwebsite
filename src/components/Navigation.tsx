@@ -12,7 +12,7 @@ export function Navigation() {
     <nav className="nav" aria-label="Primary">
       <a href="#top" className="nav__brand">
         <img
-          src={publicPath("favicon.png")}
+          src={publicPath("images/badge.png")}
           alt=""
           className="nav__badge"
           width={256}
