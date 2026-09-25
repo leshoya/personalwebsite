@@ -48,8 +48,8 @@ export function Contact() {
             let's talk!
           </h2>
           <p className="contact__text">
-            I'm looking for software engineering and ML roles. Email is the
-            fastest way to reach me.
+            I'm looking for software engineering, full-stack, and AI/ML roles.
+            Email is the fastest way to reach me!
           </p>
           <div className="hero__actions">
             <a href={`mailto:${profile.email}`} className="btn btn--coral">

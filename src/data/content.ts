@@ -46,6 +46,7 @@ export const profile = {
     school: "Duke University",
     location: "Durham, NC",
     degree: "B.S. in Computer Science",
+    gpa: "4.0",
     honors: [
       {
         id: "yc-summer-school",
@@ -100,26 +101,29 @@ export const profile = {
     ] as Honor[],
     courses: [
       "Data Structures & Algorithms",
-      "Artificial Intelligence",
+      "Computer Architecture",
       "Computer Systems",
-      "Intro to Data Science",
+      "Files & Databases",
+      "Artificial Intelligence",
+      "Discrete Mathematics",
       "Linear Algebra",
       "Probability",
     ],
   },
   skills: {
-    languages: ["Python", "Java", "JavaScript", "TypeScript", "SQL", "HTML", "CSS"],
+    languages: ["Python", "Java", "C", "TypeScript", "JavaScript", "SQL", "HTML/CSS"],
     frameworks: [
+      "Spring Boot",
+      "Node.js",
       "React",
       "Angular",
-      "Spring Boot",
       "Flask",
-      "Node.js",
       "TensorFlow",
       "PyTorch",
-      "Docker",
+      "NumPy",
+      "Pandas",
     ],
-    tools: ["Git", "CI/CD", "Figma", "FastAPI", "Next.js", "Plotly.js"],
+    tools: ["Git", "Docker", "Linux", "CI/CD"],
   },
 };
 
@@ -130,9 +134,9 @@ export const experiences: Experience[] = [
     company: "MetLife",
     period: "June 2026 – August 2026",
     highlights: [
-      "Built full-stack enterprise features with Java, Spring Boot, TypeScript, and Angular for 1,000+ users.",
-      "Developed SQL-based data workflows improving reporting efficiency by 15%.",
-      "Supported CI/CD and platform reliability initiatives, reducing deployment issues by 18%.",
+      "Built full-stack enterprise features with Java, Spring Boot, TypeScript, and Angular, implementing REST APIs, backend validation, and service-layer logic supporting 1,000+ users.",
+      "Developed AI agent evaluation frameworks and Agent-to-Agent workflows using Python, LLM APIs, and SQL pipelines, automating benchmarking, regression testing, experiment tracking, and evaluation reporting.",
+      "Improved platform reliability across Linux environments, cloud infrastructure, and CI/CD pipelines, contributing to an 18% reduction in deployment-related issues.",
     ],
   },
   {
@@ -141,29 +145,28 @@ export const experiences: Experience[] = [
     company: "State of North Carolina Government",
     period: "July 2025 – August 2025",
     highlights: [
-      "Optimized backend APIs and SQL queries, improving data retrieval performance by 45%.",
-      "Containerized workflows with Docker and improved CI/CD pipeline reliability.",
-      "Partnered with 5+ IT divisions to deploy scalable tools, boosting productivity by 35%.",
+      "Built and optimized backend APIs and SQL queries for internal government data systems, improving query response speed and reporting accuracy by 45% across enterprise workflows.",
+      "Containerized application workflows with Docker and contributed to CI/CD pipeline improvements, increasing deployment efficiency and system reliability.",
+      "Partnered with 5+ IT divisions to translate operational requirements into backend services and automated reporting workflows.",
     ],
   },
   {
     id: "mantis",
-    role: "AI / Full Stack Engineer Intern",
+    role: "AI/Full Stack Engineer Intern",
     company: "MIT Mantis AI",
     period: "July 2024 – November 2024",
     highlights: [
-      "Engineered a full-stack data platform processing 2M+ records with real-time analytics dashboards.",
-      "Built 5+ AI-powered agent interfaces, improving user engagement by 25%.",
+      "Engineered a Python, React, and Node.js platform to ingest, process, and visualize 2M+ records from unstructured datasets, delivering real-time analytics dashboards.",
+      "Built 5+ AI-powered agent interfaces integrating model-generated recommendations, interactive workflows, and personalized feedback, increasing user engagement by 25%.",
     ],
   },
   {
     id: "bwsi",
     role: "Software Engineering Intern",
-    company: "MIT – BWSI (Medlytics)",
+    company: "Massachusetts Institute of Technology, BWSI",
     period: "July 2024 – August 2024",
     highlights: [
-      "Developed biomedical ML pipelines with Python and TensorFlow across 5 healthcare subprojects.",
-      "Led model training, evaluation, and experimentation for medical imaging and biosignal analysis.",
+      "Built Python and TensorFlow preprocessing and model-training pipelines across 5 biomedical ML projects spanning medical image classification and physiological signal analysis.",
     ],
   },
   {
@@ -222,9 +225,9 @@ export const projects: Project[] = [
     title: "eMerge AI",
     org: "The Cube LLC Buildathon · 3rd Overall",
     description:
-      "End-to-end interview simulation platform for CS majors breaking into product and consulting. Real-time voice interaction, transcript analysis, and personalized AI feedback on frameworks and structure.",
+      "End-to-end AI interview simulation platform with real-time voice interaction, transcript analysis, automated scoring, and personalized feedback across 200+ mock interviews. The backend evaluation pipeline scores behavioral responses and generates real-time coaching, reducing manual review effort by 70%.",
     tags: ["Flask", "React", "OpenAI", "Whisper"],
-    metrics: ["Real-time voice AI", "Personalized scoring"],
+    metrics: ["200+ mock interviews", "70% less manual review"],
     link: "https://emergeai.us/",
     featured: true,
   },

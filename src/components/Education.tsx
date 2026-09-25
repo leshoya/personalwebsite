@@ -16,7 +16,9 @@ export function Education() {
         <div data-reveal>
           <div className="edu">
             <h3 className="edu__school">{education.school}</h3>
-            <p className="edu__degree">{education.degree}</p>
+            <p className="edu__degree">
+              {education.degree} · GPA {education.gpa}
+            </p>
             <p className="edu__courses">
               <span>Coursework</span>
               {education.courses.join(", ")}
