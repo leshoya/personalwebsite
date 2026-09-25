@@ -18,6 +18,8 @@ export interface Experience {
   location?: string;
   highlights: string[];
   earlier?: boolean;
+  /** Screen recording shown under the highlights; `link` defaults to the video file itself. */
+  demo?: { video: string; caption: string; link?: string };
 }
 
 export interface Honor {
@@ -159,6 +161,10 @@ export const experiences: Experience[] = [
       "Engineered a Python, React, and Node.js platform to ingest, process, and visualize 2M+ records from unstructured datasets, delivering real-time analytics dashboards.",
       "Built 5+ AI-powered agent interfaces integrating model-generated recommendations, interactive workflows, and personalized feedback, increasing user engagement by 25%.",
     ],
+    demo: {
+      video: "videos/agent-inspector.mp4",
+      caption: "Agent Inspector: exploring a knowledge map with AI-generated summaries",
+    },
   },
   {
     id: "bwsi",
