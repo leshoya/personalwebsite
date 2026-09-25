@@ -10,7 +10,7 @@ export function Experience() {
     <Section
       id="experience"
       eyebrow="experience"
-      title="where i've worked."
+      title="where i've worked:"
       titleArt={
         <img
           src={publicPath("images/doodle2.png")}

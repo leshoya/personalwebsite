@@ -100,61 +100,81 @@ export function Target({ x, y, r, paint = "url(#g-coral)" }: Circle & { paint?: 
   );
 }
 
-/** Inward spiral as a polyline path, from radius r0 to r1 over `turns`, starting at angle `start` (degrees). */
-function spiral(cx: number, cy: number, r0: number, r1: number, turns: number, start: number, dir: 1 | -1) {
-  const steps = Math.ceil(turns * 48);
-  const pts = [];
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    const a = ((start + dir * t * turns * 360) * Math.PI) / 180;
-    const r = r0 + (r1 - r0) * t;
-    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)}`);
-  }
-  return pts;
+/* Star pieces from stars.svg (64×64 viewBox), each with its center in that space.
+   Sparkles skip the dark outline, which only reads on a light background. */
+const STAR_OUTLINE = "#232a4a";
+const STAR_PIECES = {
+  big: {
+    center: [24, 40],
+    body: (
+      <>
+        <polygon
+          fill="#a89bdb"
+          points="19.64 24.33 19.33 24.26 20.2 20.36 29.03 30.9 42.71 29.6 35.42 41.25 40.88 53.86 38.12 53.17 38.2 52.83 32.95 40.83 38.58 32.11 27.42 33.14 19.64 24.33"
+        />
+        <polygon
+          fill="#e2c7e4"
+          points="38.58 32.11 32.95 40.83 38.2 52.83 38.12 53.17 27.55 50.53 17.24 59.62 16.29 45.91 4.46 38.92 17.21 33.78 19.33 24.26 19.64 24.33 27.42 33.14 38.58 32.11"
+        />
+      </>
+    ),
+    outline:
+      "M42.619 28.6l-13.161 1.25L20.968 19.72a1 1 0 0 0-1.742.425l-2.879 12.9L4.085 37.991a1 1 0 0 0-.135 1.788L15.332 46.5l.912 13.189a1 1 0 0 0 .618.856 1 1 0 0 0 1.041-.175l9.914-8.747 12.826 3.208a1 1 0 0 0 1.16-1.368L36.548 41.336l7.014-11.2a1 1 0 0 0-.943-1.527zM34.573 40.721a1 1 0 0 0-.07.928L39.162 52.4 27.792 49.56a1 1 0 0 0-.9.22L18.1 57.534l-.809-11.692a1 1 0 0 0-.489-.792L6.712 39.088l10.87-4.382a1 1 0 0 0 .6-.71l2.552-11.438 7.527 8.983a.992.992 0 0 0 .861.354l11.667-1.108z",
+  },
+  small: {
+    center: [43.5, 13.5],
+    body: (
+      <polygon
+        fill="url(#g-coral)"
+        points="52.67 11.79 47.7 16 48.35 22.49 42.81 19.06 36.84 21.69 38.39 15.36 34.04 10.5 40.54 10.01 43.82 4.38 46.3 10.41 52.67 11.79"
+      />
+    ),
+    outline:
+      "M53.314 12.549a1 1 0 0 0-.434-1.74L47.023 9.54 44.749 4a1 1 0 0 0-1.789-.124L39.943 9.05l-5.974.45a1 1 0 0 0-.671 1.663l3.992 4.469-1.418 5.822a1 1 0 0 0 1.375 1.151l5.482-2.415 5.1 3.148a1 1 0 0 0 1.521-.952l-.6-5.961zM47.052 15.24a1 1 0 0 0-.349.863l.452 4.469-3.822-2.36a1 1 0 0 0-.929-.064L38.3 19.958 39.357 15.6a1 1 0 0 0-.225-.9l-2.992-3.35L40.618 11a1 1 0 0 0 .789-.493L43.668 6.63l1.7 4.155a1 1 0 0 0 .713.6l4.39.951z",
+  },
+  sparkle: {
+    center: [7.43, 14.69],
+    body: (
+      <path
+        fill="#fffbf7"
+        d="M11.78,14.69a4.607,4.607,0,0,0-4.34,4.85,4.616,4.616,0,0,0-4.36-4.85A4.618,4.618,0,0,0,7.43,9.83,4.624,4.624,0,0,0,11.78,14.69Z"
+      />
+    ),
+  },
+} as const;
+
+type StarKind = keyof typeof STAR_PIECES;
+
+function StarPiece({ kind }: { kind: StarKind }) {
+  const piece = STAR_PIECES[kind];
+  return (
+    <g>
+      {piece.body}
+      {"outline" in piece && <path fill={STAR_OUTLINE} d={piece.outline} />}
+    </g>
+  );
 }
 
-/** Xiangyun (auspicious cloud): lobed silhouette with spiral curls and a curling tail. */
-export function Cloud({
-  x,
-  y,
-  scale = 1,
-  flip = false,
-  fill = "#8f9fdc",
-  line = "#1c223e",
-}: {
-  x: number;
-  y: number;
-  scale?: number;
-  flip?: boolean;
-  fill?: string;
-  line?: string;
-}) {
-  const lobes: [number, number, number, 1 | -1][] = [
-    [-58, 0, 32, -1],
-    [-4, -20, 42, 1],
-    [50, 0, 30, 1],
-  ];
-  const tail = spiral(128, 4, 22, 4, 1.6, 90, -1);
+/** A single star centered on (x, y); `size` is its scale relative to the 64-unit source art. */
+export function Star({ x, y, kind, size = 1, rotate = 0 }: { x: number; y: number; kind: StarKind; size?: number; rotate?: number }) {
+  const [cx, cy] = STAR_PIECES[kind].center;
   return (
-    <g transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}>
-      <g fill={fill}>
-        {lobes.map(([cx, cy, r]) => (
-          <circle key={cx} cx={cx} cy={cy} r={r} />
-        ))}
-        <rect x={-58} y={-4} width={108} height={34} />
-      </g>
-      <path
-        d={`M-58 30H78C98 30 106 26 ${tail[0]}L${tail.slice(1).join("L")}`}
-        fill="none"
-        stroke={fill}
-        strokeWidth="9"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <g fill="none" stroke={line} strokeWidth="3.5" strokeLinecap="round">
-        {lobes.map(([cx, cy, r, dir]) => (
-          <path key={cx} d={`M${spiral(cx, cy + 2, r * 0.66, r * 0.12, 1.5, 90, dir).join("L")}`} />
-        ))}
+    <g transform={`translate(${x} ${y}) rotate(${rotate}) scale(${size}) translate(${-cx} ${-cy})`}>
+      <StarPiece kind={kind} />
+    </g>
+  );
+}
+
+/** The full stars.svg group: big star, small star, and two sparkles, centered on (x, y). */
+export function StarCluster({ x, y, size = 1 }: { x: number; y: number; size?: number }) {
+  const [sx, sy] = STAR_PIECES.sparkle.center;
+  return (
+    <g transform={`translate(${x} ${y}) scale(${size}) translate(-32 -32)`}>
+      <StarPiece kind="big" />
+      <StarPiece kind="small" />
+      <StarPiece kind="sparkle" />
+      <g transform={`translate(55.76 37.15) scale(1.1) translate(${-sx} ${-sy})`}>
+        <StarPiece kind="sparkle" />
       </g>
     </g>
   );
