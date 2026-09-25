@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { profile } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { Navigation } from "./Navigation";
-import { Donut, Dots, Record, RingStack, Target } from "./Shapes";
+import { Cloud, Donut, Dots, Record, RingStack, Target } from "./Shapes";
 
 function HeroArt() {
   return (
@@ -48,6 +48,15 @@ function HeroArt() {
       </g>
 
       <g>
+        <g className="float float--slow">
+          <Cloud x={700} y={110} scale={0.8} />
+        </g>
+        <g className="float float--alt">
+          <Cloud x={1110} y={235} scale={0.55} flip fill="#f4a896" />
+        </g>
+        <g className="float">
+          <Cloud x={330} y={600} scale={0.6} flip />
+        </g>
         <g className="float">
           <Target x={720} y={330} r={78} />
         </g>

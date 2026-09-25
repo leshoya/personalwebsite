@@ -874,17 +874,17 @@ strong {
 }
 
 .float {
-  animation: float 7s ease-in-out infinite;
+  animation: float 5s ease-in-out infinite;
 }
 
 .float--alt {
-  animation-duration: 5.5s;
-  animation-delay: -2s;
+  animation-duration: 4s;
+  animation-delay: -1.5s;
 }
 
 .float--slow {
-  animation-duration: 9s;
-  animation-delay: -4s;
+  animation-duration: 6.5s;
+  animation-delay: -3s;
 }
 
 @keyframes spin {
@@ -895,7 +895,7 @@ strong {
 
 @keyframes float {
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-16px);
   }
 }
 

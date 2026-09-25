@@ -100,6 +100,66 @@ export function Target({ x, y, r, paint = "url(#g-coral)" }: Circle & { paint?: 
   );
 }
 
+/** Inward spiral as a polyline path, from radius r0 to r1 over `turns`, starting at angle `start` (degrees). */
+function spiral(cx: number, cy: number, r0: number, r1: number, turns: number, start: number, dir: 1 | -1) {
+  const steps = Math.ceil(turns * 48);
+  const pts = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const a = ((start + dir * t * turns * 360) * Math.PI) / 180;
+    const r = r0 + (r1 - r0) * t;
+    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)}`);
+  }
+  return pts;
+}
+
+/** Xiangyun (auspicious cloud): lobed silhouette with spiral curls and a curling tail. */
+export function Cloud({
+  x,
+  y,
+  scale = 1,
+  flip = false,
+  fill = "#8f9fdc",
+  line = "#1c223e",
+}: {
+  x: number;
+  y: number;
+  scale?: number;
+  flip?: boolean;
+  fill?: string;
+  line?: string;
+}) {
+  const lobes: [number, number, number, 1 | -1][] = [
+    [-58, 0, 32, -1],
+    [-4, -20, 42, 1],
+    [50, 0, 30, 1],
+  ];
+  const tail = spiral(128, 4, 22, 4, 1.6, 90, -1);
+  return (
+    <g transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}>
+      <g fill={fill}>
+        {lobes.map(([cx, cy, r]) => (
+          <circle key={cx} cx={cx} cy={cy} r={r} />
+        ))}
+        <rect x={-58} y={-4} width={108} height={34} />
+      </g>
+      <path
+        d={`M-58 30H78C98 30 106 26 ${tail[0]}L${tail.slice(1).join("L")}`}
+        fill="none"
+        stroke={fill}
+        strokeWidth="9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <g fill="none" stroke={line} strokeWidth="3.5" strokeLinecap="round">
+        {lobes.map(([cx, cy, r, dir]) => (
+          <path key={cx} d={`M${spiral(cx, cy + 2, r * 0.66, r * 0.12, 1.5, 90, dir).join("L")}`} />
+        ))}
+      </g>
+    </g>
+  );
+}
+
 /** Grid of small dots. */
 export function Dots({
   x,
