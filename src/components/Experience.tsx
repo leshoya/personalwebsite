@@ -1,4 +1,5 @@
 import { experiences } from "../data/content";
+import { publicPath } from "../lib/publicPath";
 import { Section } from "./Section";
 
 export function Experience() {
@@ -6,7 +7,20 @@ export function Experience() {
   const earlier = experiences.filter((e) => e.earlier);
 
   return (
-    <Section id="experience" eyebrow="experience" title="where i've worked.">
+    <Section
+      id="experience"
+      eyebrow="experience"
+      title="where i've worked."
+      titleArt={
+        <img
+          src={publicPath("images/doodle2.png")}
+          alt=""
+          className="section__title-art section__title-art--lg"
+          width={696}
+          height={689}
+        />
+      }
+    >
       <ol className="timeline">
         {main.map((exp) => (
           <li key={exp.id} className="timeline__item" data-reveal>

@@ -82,7 +82,20 @@ const photos = [
 
 export function About() {
   return (
-    <Section id="about" eyebrow="about me" title="i like solving cool problems!">
+    <Section
+      id="about"
+      eyebrow="about me"
+      title="i like solving cool problems!"
+      titleArt={
+        <img
+          src={publicPath("images/doodle.png")}
+          alt=""
+          className="section__title-art"
+          width={508}
+          height={497}
+        />
+      }
+    >
       <div className="about" data-reveal>
         <Portrait />
         <div className="about__text">

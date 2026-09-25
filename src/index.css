@@ -277,6 +277,40 @@ strong {
   color: var(--ink);
 }
 
+.section__title-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.section__title-row .section__title {
+  min-width: 0;
+}
+
+.section__title-art {
+  width: clamp(3.5rem, 7vw, 5.5rem);
+  height: auto;
+  flex-shrink: 0;
+  transform: rotate(-6deg);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.section__title-art:hover {
+  transform: rotate(6deg) scale(1.08);
+}
+
+.section__title-art--lg {
+  width: clamp(4.5rem, 9vw, 7.5rem);
+}
+
+.section__title-art--flip {
+  transform: rotate(8deg);
+}
+
+.section__title-art--flip:hover {
+  transform: rotate(-4deg) scale(1.08);
+}
+
 .section--dark .section__title {
   color: var(--cream);
 }

@@ -1,4 +1,5 @@
 import { profile } from "../data/content";
+import { publicPath } from "../lib/publicPath";
 import { Section } from "./Section";
 
 const skillGroups = [
@@ -11,7 +12,20 @@ export function Education() {
   const { education } = profile;
 
   return (
-    <Section id="education" eyebrow="education & recognition" title="background.">
+    <Section
+      id="education"
+      eyebrow="education & recognition"
+      title="background."
+      titleArt={
+        <img
+          src={publicPath("images/doodle3.png")}
+          alt=""
+          className="section__title-art section__title-art--flip"
+          width={237}
+          height={225}
+        />
+      }
+    >
       <div className="background">
         <div data-reveal>
           <div className="edu">
