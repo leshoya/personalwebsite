@@ -126,13 +126,3 @@ export function Dots({
   }
   return <g>{dots}</g>;
 }
-
-/** Ring-and-dot logo mark. */
-export function Mark({ className = "" }: { className?: string }) {
-  return (
-    <svg className={`mark ${className}`.trim()} viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" strokeWidth="2.5" />
-      <circle cx="12" cy="12" r="4.5" fill="#f4a896" />
-    </svg>
-  );
-}

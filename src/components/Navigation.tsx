@@ -1,5 +1,5 @@
 import { profile } from "../data/content";
-import { Mark } from "./Shapes";
+import { publicPath } from "../lib/publicPath";
 
 const links = [
   { href: "#about", label: "about" },
@@ -11,7 +11,13 @@ export function Navigation() {
   return (
     <nav className="nav" aria-label="Primary">
       <a href="#top" className="nav__brand">
-        <Mark />
+        <img
+          src={publicPath("favicon.png")}
+          alt=""
+          className="nav__badge"
+          width={256}
+          height={256}
+        />
         {profile.name}
       </a>
       <ul className="nav__links">

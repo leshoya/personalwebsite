@@ -164,10 +164,16 @@ strong {
   color: var(--cream);
 }
 
-.mark {
-  width: 2.25rem;
-  height: 2.25rem;
-  color: var(--cream);
+.nav__badge {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--water-light);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav__brand:hover .nav__badge {
+  transform: rotate(-10deg) scale(1.06);
 }
 
 .nav__links {
