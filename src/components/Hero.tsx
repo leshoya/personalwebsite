@@ -1,8 +1,11 @@
+import { useRef } from "react";
+import type { PointerEvent } from "react";
 import { profile } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { Navigation } from "./Navigation";
 import { Donut, Dots, Record, RingStack, Target } from "./Shapes";
 
+/** Layers move different amounts with the pointer (see .layer in CSS) for a parallax effect. */
 function HeroArt() {
   return (
     <svg
@@ -11,48 +14,123 @@ function HeroArt() {
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
     >
-      {/* Lighter blob behind the headline, dark field top right */}
-      <path
-        d="M0 0H650C610 130 600 250 480 285C390 312 300 285 250 370C200 455 240 575 0 610Z"
-        fill="url(#g-blob)"
-      />
-      <circle cx="1010" cy="70" r="370" fill="url(#g-shade)" />
-      <circle cx="450" cy="-10" r="115" fill="url(#g-shade)" />
-      <circle cx="450" cy="-10" r="58" fill="#5e8ca1" />
+      <g className="layer layer--back">
+        {/* Lighter blob behind the headline, dark field top right */}
+        <path
+          d="M0 0H650C610 130 600 250 480 285C390 312 300 285 250 370C200 455 240 575 0 610Z"
+          fill="url(#g-blob)"
+        />
+        <circle cx="1010" cy="70" r="370" fill="url(#g-shade)" />
+        <circle cx="450" cy="-10" r="115" fill="url(#g-shade)" />
+        <circle cx="450" cy="-10" r="58" fill="#6876b6" />
+      </g>
 
-      <RingStack x={-10} y={215} r={66} />
-      <RingStack x={20} y={305} r={52} stroke="#fbcab8" />
-      <RingStack x={880} y={-38} r={80} />
-      <RingStack x={995} y={-38} r={80} stroke="#fbcab8" />
+      <g className="layer layer--mid">
+        <RingStack x={-10} y={215} r={66} />
+        <RingStack x={20} y={305} r={52} stroke="#fbcab8" />
+        <RingStack x={880} y={-38} r={80} />
+        <RingStack x={995} y={-38} r={80} stroke="#fbcab8" />
 
-      <Target x={720} y={330} r={78} />
-      <Donut x={850} y={235} r={46} paint="url(#g-coral)" />
-      <Record x={1015} y={455} r={150} />
-      <Donut x={640} y={600} r={92} />
+        <circle cx="470" cy="700" r="72" fill="none" stroke="#b6c3f0" strokeWidth="2.5" />
+        <circle cx="470" cy="700" r="36" fill="none" stroke="url(#g-water)" strokeWidth="10" />
+        <circle cx="790" cy="800" r="112" fill="none" stroke="#e8927c" strokeWidth="11" />
+        <circle cx="790" cy="800" r="70" fill="none" stroke="#e8927c" strokeWidth="9" />
+        <circle cx="935" cy="800" r="112" fill="none" stroke="#f4a896" strokeWidth="11" />
+        <circle cx="935" cy="800" r="70" fill="none" stroke="#f4a896" strokeWidth="9" />
+        <circle cx="1205" cy="600" r="118" fill="none" stroke="#b6c3f0" strokeWidth="2.5" />
+        <circle cx="1205" cy="600" r="72" fill="none" stroke="url(#g-coral)" strokeWidth="26" />
 
-      <circle cx="470" cy="700" r="72" fill="none" stroke="#a8cfe0" strokeWidth="2.5" />
-      <circle cx="470" cy="700" r="36" fill="none" stroke="url(#g-water)" strokeWidth="10" />
-      <circle cx="790" cy="800" r="112" fill="none" stroke="#e8927c" strokeWidth="11" />
-      <circle cx="790" cy="800" r="70" fill="none" stroke="#e8927c" strokeWidth="9" />
-      <circle cx="935" cy="800" r="112" fill="none" stroke="#f4a896" strokeWidth="11" />
-      <circle cx="935" cy="800" r="70" fill="none" stroke="#f4a896" strokeWidth="9" />
-      <circle cx="1205" cy="600" r="118" fill="none" stroke="#a8cfe0" strokeWidth="2.5" />
-      <circle cx="1205" cy="600" r="72" fill="none" stroke="url(#g-coral)" strokeWidth="26" />
+        <g className="twinkle">
+          <Dots x={560} y={175} cols={2} />
+          <Dots x={1125} y={210} cols={1} rows={2} gap={16} />
+          <Dots x={170} y={660} cols={3} />
+        </g>
+        <Dots x={680} y={175} cols={1} />
+        <Dots x={1112} y={660} cols={3} rows={2} />
+        <Dots x={120} y={660} cols={1} />
+        <Dots x={255} y={30} cols={2} fill="#1c223e" />
+      </g>
 
-      <Dots x={560} y={175} cols={2} />
-      <Dots x={680} y={175} cols={1} />
-      <Dots x={1125} y={210} cols={1} rows={2} gap={16} />
-      <Dots x={1112} y={660} cols={3} rows={2} />
-      <Dots x={120} y={660} cols={1} />
-      <Dots x={170} y={660} cols={3} />
-      <Dots x={255} y={30} cols={2} fill="#172732" />
+      <g className="layer layer--front">
+        <g className="float">
+          <Target x={720} y={330} r={78} />
+        </g>
+        <g className="float float--alt">
+          <Donut x={850} y={235} r={46} paint="url(#g-coral)" />
+        </g>
+        <SpotifyRecord />
+        <g className="float float--slow">
+          <Donut x={640} y={600} r={92} />
+        </g>
+      </g>
     </svg>
   );
 }
 
-export function Hero() {
+/** The big record links to Spotify; hovering spins it up and shows a caption (and plays a clip if configured). */
+function SpotifyRecord() {
+  const audio = useRef<HTMLAudioElement | null>(null);
+
+  const play = () => {
+    if (!profile.songPreview) return;
+    audio.current ??= new Audio(publicPath(profile.songPreview));
+    audio.current.volume = 0.5;
+    // Browsers block audio until the visitor has interacted with the page; ignore that case.
+    audio.current.play().catch(() => {});
+  };
+
+  const stop = () => audio.current?.pause();
+
   return (
-    <header className="panel hero" id="top">
+    <a
+      href={profile.spotify}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="record-link"
+      aria-label="Sophia's Spotify"
+      onMouseEnter={play}
+      onMouseLeave={stop}
+      onFocus={play}
+      onBlur={stop}
+    >
+      <g className="spin-hover">
+        <Record x={1015} y={455} r={150} />
+      </g>
+      <g className="record-caption">
+        <rect x="905" y="262" width="220" height="44" rx="22" fill="#fffbf7" />
+        <text x="1015" y="290" textAnchor="middle">
+          hear me out! ♪
+        </text>
+      </g>
+    </a>
+  );
+}
+
+export function Hero() {
+  const ref = useRef<HTMLElement>(null);
+
+  const onPointerMove = (e: PointerEvent<HTMLElement>) => {
+    if (e.pointerType !== "mouse" || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const my = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+    ref.current.style.setProperty("--mx", mx.toFixed(3));
+    ref.current.style.setProperty("--my", my.toFixed(3));
+  };
+
+  const onPointerLeave = () => {
+    ref.current?.style.setProperty("--mx", "0");
+    ref.current?.style.setProperty("--my", "0");
+  };
+
+  return (
+    <header
+      className="panel hero"
+      id="top"
+      ref={ref}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+    >
       <HeroArt />
       <Navigation />
       <div className="hero__content">
@@ -70,7 +148,7 @@ export function Hero() {
         </p>
         <div className="hero__actions">
           <a href="#projects" className="btn btn--coral">
-            See my work
+            see my work
           </a>
           <a
             href={publicPath(profile.resume)}
@@ -78,7 +156,7 @@ export function Hero() {
             rel="noopener noreferrer"
             className="btn btn--outline"
           >
-            Resume
+            resume
           </a>
         </div>
       </div>

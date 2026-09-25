@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { profile } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { Section } from "./Section";
@@ -11,11 +12,34 @@ function Portrait() {
           <circle cx="200" cy="200" r="128" />
         </clipPath>
       </defs>
-      <circle cx="200" cy="200" r="186" fill="#1f3442" />
+      <circle cx="200" cy="200" r="186" fill="#232a4a" />
       {[146, 156, 166, 176].map((r) => (
-        <circle key={r} cx="200" cy="200" r={r} fill="none" stroke="#a8cfe0" strokeOpacity="0.28" />
+        <circle key={r} cx="200" cy="200" r={r} fill="none" stroke="#b6c3f0" strokeOpacity="0.28" />
       ))}
       <circle cx="200" cy="200" r="186" fill="none" stroke="url(#g-water)" strokeWidth="12" />
+      {/* Arcs that orbit the photo */}
+      <circle
+        className="spin"
+        cx="200"
+        cy="200"
+        r="158"
+        fill="none"
+        stroke="url(#g-coral)"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeDasharray="140 853"
+      />
+      <circle
+        className="spin spin--reverse"
+        cx="200"
+        cy="200"
+        r="146"
+        fill="none"
+        stroke="#b6c3f0"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeDasharray="60 857"
+      />
       <image
         href={publicPath("images/headshot.png")}
         x="72"
@@ -35,19 +59,36 @@ function Portrait() {
 const facts = [
   { label: "Studying", value: `${profile.education.degree}, ${profile.education.school}` },
   { label: "Based in", value: profile.education.location },
-  { label: "Focus", value: "Full-stack engineering, applied ML, healthcare" },
+  { label: "Interests", value: "Full-stack engineering, applied ML, healthcare tech" },
+];
+
+const photos = [
+  {
+    src: publicPath("images/presenting.png"),
+    alt: "Sophia Lee presenting to a group",
+    caption: "Presenting project work",
+  },
+  {
+    src: publicPath("images/nc-workshop.png"),
+    alt: "Sophia Lee at an NC Department of Administration workshop",
+    caption: "NC Lady Cardinal Mentorship Program",
+  },
+  {
+    src: publicPath("images/award.png"),
+    alt: "Sophia Lee receiving the NCWIT Award for Aspirations in Computing",
+    caption: "NCWIT Aspirations in Computing Award",
+  },
 ];
 
 export function About() {
   return (
-    <Section id="about" eyebrow="About me" title="Engineering with people in mind.">
-      <div className="about">
+    <Section id="about" eyebrow="about me" title="i like solving cool problems!">
+      <div className="about" data-reveal>
         <Portrait />
         <div className="about__text">
           <p className="lead">
-            I'm a Computer Science student at Duke who likes problems where careful engineering
-            has a direct effect on people, from a medical imaging model that flags disease earlier
-            to a platform thousands of employees rely on every day.
+            I'm a computer science student at Duke. Lately that's meant training models to spot
+            disease in medical scans and building software that thousands of people use at work.
           </p>
           <p>
             I've shipped full-stack enterprise features at MetLife and the State of North
@@ -63,6 +104,20 @@ export function About() {
             ))}
           </dl>
         </div>
+      </div>
+
+      <div className="photos">
+        {photos.map((photo, i) => (
+          <figure
+            key={photo.src}
+            className="photos__item"
+            data-reveal
+            style={{ "--i": i } as CSSProperties}
+          >
+            <img src={photo.src} alt={photo.alt} loading="lazy" />
+            <figcaption>{photo.caption}</figcaption>
+          </figure>
+        ))}
       </div>
     </Section>
   );

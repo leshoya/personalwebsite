@@ -18,7 +18,7 @@ export function Section({ id, eyebrow, title, dark = false, art, children }: Sec
     >
       {art}
       <div className="section__inner">
-        <div className="section__header">
+        <div className="section__header" data-reveal>
           <p className="eyebrow">{eyebrow}</p>
           <h2 className="section__title" id={`${id}-title`}>
             {title}

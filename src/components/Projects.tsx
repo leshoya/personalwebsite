@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { projects } from "../data/content";
 import type { Project } from "../data/content";
 import { Section } from "./Section";
@@ -46,19 +47,26 @@ export function Projects() {
   const other = projects.filter((p) => !p.featured);
 
   return (
-    <Section id="projects" eyebrow="Projects" title="Things I've built." dark>
+    <Section id="projects" eyebrow="projects" title="things i've built." dark>
       <div className="cards">
         {featured.map((project, i) => {
           const Cover = covers[i % covers.length];
           return (
-            <article key={project.id} className="card">
+            <article
+              key={project.id}
+              className="card"
+              data-reveal
+              style={{ "--i": i } as CSSProperties}
+            >
               <svg
                 className="card__cover"
                 viewBox="0 0 340 200"
                 preserveAspectRatio="xMidYMid slice"
                 aria-hidden="true"
               >
-                <Cover />
+                <g className="card__art">
+                  <Cover />
+                </g>
               </svg>
               <div className="card__body">
                 <p className="card__org">{project.org}</p>
@@ -75,7 +83,7 @@ export function Projects() {
       <h3 className="more__title">More projects</h3>
       <ul className="more">
         {other.map((project) => (
-          <li key={project.id} className="more__item">
+          <li key={project.id} className="more__item" data-reveal>
             <p className="more__org">{project.org}</p>
             <h4 className="more__name">
               {project.link ? (

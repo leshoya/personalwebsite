@@ -2,9 +2,9 @@ import { profile } from "../data/content";
 import { Mark } from "./Shapes";
 
 const links = [
-  { href: "#about", label: "About" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
+  { href: "#about", label: "about" },
+  { href: "#experience", label: "experience" },
+  { href: "#projects", label: "projects" },
 ];
 
 export function Navigation() {
@@ -24,7 +24,7 @@ export function Navigation() {
         ))}
         <li>
           <a href="#contact" className="btn btn--outline btn--sm">
-            Contact
+            contact
           </a>
         </li>
       </ul>

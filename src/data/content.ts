@@ -39,6 +39,9 @@ export const profile = {
   linkedin: "https://linkedin.com/in/sophial25",
   github: "https://github.com/leshoya",
   resume: "resume-sophia-lee.pdf",
+  spotify: "https://open.spotify.com/user/dqef77t7y46kkq7gdcgmfiaai",
+  /** Optional short audio clip in public/ (e.g. "audio/song.mp3") played while hovering the hero record. */
+  songPreview: "",
   education: {
     school: "Duke University",
     location: "Durham, NC",

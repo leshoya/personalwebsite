@@ -6,10 +6,10 @@ export function Experience() {
   const earlier = experiences.filter((e) => e.earlier);
 
   return (
-    <Section id="experience" eyebrow="Experience" title="Where I've worked.">
+    <Section id="experience" eyebrow="experience" title="where i've worked.">
       <ol className="timeline">
         {main.map((exp) => (
-          <li key={exp.id} className="timeline__item">
+          <li key={exp.id} className="timeline__item" data-reveal>
             <span className="timeline__node" aria-hidden="true" />
             <p className="timeline__period">{exp.period}</p>
             <h3 className="timeline__role">{exp.role}</h3>
@@ -23,7 +23,7 @@ export function Experience() {
         ))}
       </ol>
 
-      <div className="earlier">
+      <div className="earlier" data-reveal>
         <h3 className="earlier__title">Earlier programs</h3>
         <ul className="earlier__list">
           {earlier.map((exp) => (

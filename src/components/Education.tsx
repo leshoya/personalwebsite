@@ -11,9 +11,9 @@ export function Education() {
   const { education } = profile;
 
   return (
-    <Section id="education" eyebrow="Education & recognition" title="Background.">
+    <Section id="education" eyebrow="education & recognition" title="background.">
       <div className="background">
-        <div>
+        <div data-reveal>
           <div className="edu">
             <h3 className="edu__school">{education.school}</h3>
             <p className="edu__degree">{education.degree}</p>
@@ -34,7 +34,7 @@ export function Education() {
           </dl>
         </div>
 
-        <div>
+        <div data-reveal>
           <h3 className="col__title">Honors</h3>
           <ul className="honors">
             {education.honors.map((honor) => (
