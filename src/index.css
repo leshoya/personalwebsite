@@ -250,7 +250,7 @@ a {
 
 .hero__summary {
   margin-top: 1.25rem;
-  max-width: 36rem;
+  max-width: 31rem;
   font-size: 1.0625rem;
   color: var(--fg-2);
 }

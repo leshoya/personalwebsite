@@ -1,6 +1,6 @@
 # Sophia Lee — Personal Portfolio
 
-An interactive, koi-themed personal website showcasing AI/ML healthcare projects, full-stack engineering experience, and creative design.
+Personal website for Sophia Lee: experience, projects, education, and contact.
 
 ## Quick Start
 
@@ -18,12 +18,9 @@ npm run build
 npm run preview
 ```
 
-## Features
+## Editing content
 
-- **Koi fish theme** — watercolor-inspired palette with interactive ripple canvas
-- **Interactive** — swimming koi react to cursor, ripple effects, smooth scroll animations
-- **Recruiter-ready** — clear experience timeline, quantified impact metrics, filterable projects
-- **Room to grow** — add projects anytime in `src/data/content.ts`
+All text lives in `src/data/content.ts`. Add experience, projects, or honors there; set `featured: true` on a project to show it with a full description, and `earlier: true` on an experience to list it in the compact "Earlier" section.
 
 ## Deploy
 
@@ -33,4 +30,4 @@ Works with Vercel, Netlify, or GitHub Pages. For GitHub Pages, set `base: '/pers
 
 - React 19 + TypeScript
 - Vite
-- Framer Motion
+- Plain CSS (light and dark themes)
