@@ -3,8 +3,8 @@ import { publicPath } from "../lib/publicPath";
 
 const links = [
   { href: "#about", label: "about" },
-  { href: "#experience", label: "experience" },
   { href: "#projects", label: "projects" },
+  { href: "#experience", label: "experience" },
 ];
 
 export function Navigation() {
