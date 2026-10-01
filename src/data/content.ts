@@ -245,7 +245,7 @@ export const projects: Project[] = [
       "AI-powered collaborative music platform with an interactive flow diagram. Gemini recommends instruments from 71+ global traditions; ElevenLabs powers real-time producer voice feedback and graph-based composition.",
     tags: ["Next.js", "React", "FastAPI", "Gemini", "ElevenLabs"],
     metrics: ["71+ instruments", "Speech-to-graph"],
-    link: "https://devpost.com/software/jamflow-bdc4yr",
+    link: "https://www.youtube.com/watch?v=GQqYw9a_Mco",
     featured: true,
   },
   {
