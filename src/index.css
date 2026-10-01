@@ -682,7 +682,36 @@ strong {
   }
 }
 
-/* eMerge cover: voice waveform bars pulse like live speech */
+/* Mutual Fund cover: a ring pulses out from the median's latest value */
+.ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ping 2s ease-out infinite;
+}
+
+@keyframes ping {
+  from {
+    transform: scale(0.4);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* eMerge cover: the LIVE dot blinks */
+.blink {
+  animation: blink 1.2s steps(2, jump-none) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* Waveform bars pulse like live speech */
 .wave-bar {
   transform-box: fill-box;
   transform-origin: center;
@@ -724,6 +753,24 @@ strong {
   font-weight: 300;
   line-height: 1.65;
   color: rgba(255, 251, 247, 0.86);
+}
+
+.card__metrics {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.card__metrics li {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(244, 168, 150, 0.45);
+  border-radius: 999px;
+  background: rgba(244, 168, 150, 0.1);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--coral-light);
 }
 
 .card__tags {
@@ -1066,7 +1113,7 @@ strong {
 }
 
 .card:hover .card__art {
-  transform: scale(1.08) rotate(-4deg);
+  transform: scale(1.04);
 }
 
 .photos__item img {
