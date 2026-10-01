@@ -664,7 +664,7 @@ strong {
 }
 
 .card-wrap:nth-child(3) .card__cover {
-  background: linear-gradient(135deg, var(--navy-900), var(--navy-950));
+  background: linear-gradient(135deg, #c2c1f2, #9d9be0);
 }
 
 /* JamFusion cover: a short highlight travels along each graph edge */
