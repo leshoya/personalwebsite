@@ -184,7 +184,7 @@ export const experiences: Experience[] = [
   {
     id: "gwc",
     earlier: true,
-    role: "Data Science Alumni",
+    role: "Data Science Program Alumna",
     company: "Girls Who Code",
     period: "June 2023 – September 2023",
     location: "Remote",
@@ -265,25 +265,25 @@ export const projects: Project[] = [
     title: "Mammogram Analysis Model",
     org: "MIT Medlytics",
     description:
-      "Transfer learning CNN for breast cancer detection from mammogram images.",
+      "Transfer learning CNN for breast cancer detection, trained on mammography scans and evaluated on a held-out test set.",
     tags: ["TensorFlow", "CNN", "Transfer Learning"],
-    metrics: ["96% test accuracy", "89% multiclass accuracy"],
+    metrics: ["96% held-out test accuracy", "89% multiclass accuracy"],
   },
   {
     id: "hypothyroid",
     title: "Hypothyroidism Classification",
     org: "MIT Medlytics",
     description:
-      "Clinical ML model comparing KNN, RF, DT, and SVM classifiers for hypothyroidism detection.",
+      "Clinical ML model comparing KNN, random forest, decision tree, and SVM classifiers for hypothyroidism detection, trained and tested on structured patient lab data.",
     tags: ["Scikit-learn", "KNN", "SVM", "Random Forest"],
-    metrics: ["98% accuracy", "0.99 AUROC"],
+    metrics: ["98% test accuracy", "0.99 AUROC"],
   },
   {
     id: "ocular",
     title: "Ocular Disease Classification",
     org: "MIT Medlytics",
     description:
-      "Retinal scan classifier detecting glaucoma, cataracts, and other ocular conditions.",
+      "CNN that classifies retinal fundus scans into five classes, including glaucoma and cataracts, evaluated on a held-out validation set.",
     tags: ["CNN", "Medical Imaging", "5-Class"],
     metrics: ["86% validation accuracy"],
   },
