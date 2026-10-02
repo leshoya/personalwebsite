@@ -148,6 +148,10 @@ export function Hero() {
             resume
           </a>
         </div>
+        <p className="status">
+          <span className="status__dot" aria-hidden="true" />
+          {profile.availability}
+        </p>
       </div>
     </header>
   );

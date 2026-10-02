@@ -54,7 +54,7 @@ export function Contact() {
             let's talk!
           </h2>
           <p className="contact__text">
-            I'm looking for software engineering, full-stack, and AI/ML roles.
+            I'm looking for software engineering internships for Summer 2027.
             Email is the fastest way to reach me!
           </p>
           <div className="hero__actions">

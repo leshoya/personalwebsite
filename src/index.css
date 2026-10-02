@@ -310,6 +310,46 @@ strong {
   gap: 1rem;
 }
 
+/* Availability line in the hero */
+.status {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: flex-start;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(21, 26, 51, 0.35);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+}
+
+.status__dot {
+  position: relative;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--coral);
+}
+
+.status__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--coral);
+  animation: status-ping 2s ease-out infinite;
+}
+
+@keyframes status-ping {
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
 /* ─── Sections ─── */
 .section {
   padding: clamp(4.5rem, 10vw, 8rem) var(--edge);
@@ -1181,6 +1221,27 @@ strong {
   font-weight: 300;
   line-height: 1.65;
   color: rgba(255, 251, 247, 0.86);
+}
+
+.card__role {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--coral);
+  border-radius: 0 6px 6px 0;
+  background: rgba(255, 251, 247, 0.06);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255, 251, 247, 0.9);
+}
+
+.card__role strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--coral-light);
 }
 
 .card__metrics {
