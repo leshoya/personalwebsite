@@ -682,6 +682,237 @@ strong {
   }
 }
 
+/* ─── Project cover motion ───
+   Static defaults are the finished state, so reduced-motion visitors still see a complete picture. */
+
+/* Mutual Fund: alternates between the simulation view and the AI optimizer (12s loop) */
+.mf-swap {
+  animation: mf-swap 12s ease-in-out infinite;
+}
+
+.mf-swap--late {
+  opacity: 0;
+  animation-delay: -6s;
+}
+
+@keyframes mf-swap {
+  0% {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  4%,
+  46% {
+    opacity: 1;
+    transform: none;
+  }
+  50%,
+  100% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+
+/* Lines draw themselves in each time their view appears */
+.mf-draw {
+  stroke-dasharray: 100;
+  animation: mf-draw 12s ease-out infinite;
+}
+
+.mf-draw--late {
+  animation-name: mf-draw-late;
+}
+
+@keyframes mf-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  22%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes mf-draw-late {
+  0%,
+  50% {
+    stroke-dashoffset: 100;
+  }
+  72%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.mf-fade {
+  animation: mf-fade 12s ease-out infinite;
+}
+
+@keyframes mf-fade {
+  0%,
+  6% {
+    opacity: 0;
+  }
+  24%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.mf-ring {
+  animation: mf-ring 12s ease-out infinite;
+}
+
+@keyframes mf-ring {
+  0%,
+  50% {
+    stroke-dasharray: 0 100;
+  }
+  66%,
+  100% {
+    stroke-dasharray: 50 100;
+  }
+}
+
+.mf-grow {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: mf-grow 12s ease-out infinite;
+}
+
+@keyframes mf-grow {
+  0%,
+  52% {
+    transform: scaleX(0);
+  }
+  68%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* eMerge: feedback fills in and the transcript types out (7s loop) */
+.em-ring {
+  animation: em-ring 7s ease-out infinite;
+}
+
+@keyframes em-ring {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+  25%,
+  92% {
+    stroke-dasharray: 92 100;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 92 100;
+    opacity: 0;
+  }
+}
+
+.em-grow,
+.em-type {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: em-grow 7s ease-out infinite;
+}
+
+.em-type {
+  animation-timing-function: steps(8, end);
+}
+
+@keyframes em-grow {
+  0% {
+    transform: scaleX(0);
+  }
+  14%,
+  92% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+.em-pop {
+  animation: em-pop 7s ease-out infinite;
+}
+
+@keyframes em-pop {
+  0%,
+  12% {
+    opacity: 0;
+  }
+  18%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* JamFusion: drag a chip from the palette and drop it as a new node (8s loop) */
+.jam-drag {
+  opacity: 0;
+  animation: jam-drag 8s ease-in-out infinite;
+}
+
+@keyframes jam-drag {
+  0%,
+  8% {
+    opacity: 0;
+    transform: none;
+  }
+  14% {
+    opacity: 1;
+    transform: none;
+  }
+  40% {
+    opacity: 1;
+    transform: translate(51px, 37px);
+  }
+  46%,
+  100% {
+    opacity: 0;
+    transform: translate(51px, 37px);
+  }
+}
+
+.jam-drop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: jam-drop 8s ease-out infinite;
+}
+
+@keyframes jam-drop {
+  0%,
+  40% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  48%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.jam-glow {
+  animation: jam-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes jam-glow {
+  to {
+    fill: #fbcab8;
+  }
+}
+
 /* Mutual Fund cover: a ring pulses out from the median's latest value */
 .ping {
   transform-box: fill-box;
