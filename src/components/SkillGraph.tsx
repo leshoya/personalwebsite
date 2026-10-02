@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { experiences, profile, projects } from "../data/content";
 
 /**
  * Interactive 3D graph of skills: clusters of related tools orbit a center node.
@@ -13,11 +14,11 @@ interface Cluster {
 }
 
 const clusters: Cluster[] = [
-  { name: "Languages", color: "#f4a896", items: ["Python", "Java", "C", "TypeScript", "JavaScript", "SQL"] },
-  { name: "Frameworks", color: "#8f9fdc", items: ["React", "Angular", "Spring Boot", "Node.js", "Flask", "FastAPI", "Next.js"] },
-  { name: "ML & AI", color: "#c2c1f2", items: ["PyTorch", "TensorFlow", "NumPy", "Pandas", "LLM APIs", "Gemini", "Whisper"] },
-  { name: "Tools", color: "#b6c3f0", items: ["Git", "Docker", "Linux", "CI/CD"] },
-  { name: "Domains", color: "#fbcab8", items: ["Healthcare ML", "FinTech", "AI Agents", "Music Tech"] },
+  { name: "Languages", color: "#e8927c", items: ["Python", "Java", "C", "TypeScript", "JavaScript", "SQL"] },
+  { name: "Frameworks", color: "#5a68ad", items: ["React", "Angular", "Spring Boot", "Node.js", "Flask", "FastAPI", "Next.js"] },
+  { name: "ML & AI", color: "#9d9be0", items: ["PyTorch", "TensorFlow", "NumPy", "Pandas", "LLM APIs", "Gemini", "Whisper"] },
+  { name: "Tools", color: "#8f9fdc", items: ["Git", "Docker", "Linux", "CI/CD"] },
+  { name: "Domains", color: "#f4a896", items: ["Healthcare ML", "FinTech", "AI Agents", "Music Tech"] },
 ];
 
 /** Links between clusters, so the graph reads as one connected stack. */
@@ -60,7 +61,7 @@ function seeded(seed: number) {
 
 function buildGraph() {
   const rand = seeded(42);
-  const nodes: GraphNode[] = [{ label: "Sophia", kind: "center", color: "#fffbf7", x: 0, y: 0, z: 0 }];
+  const nodes: GraphNode[] = [{ label: "me", kind: "center", color: "#232a4a", x: 0, y: 0, z: 0 }];
   const edges: [number, number][] = [];
   const index = new Map<string, number>();
 
@@ -106,6 +107,16 @@ function buildGraph() {
 }
 
 const GRAPH = buildGraph();
+
+const stats = [
+  { value: experiences.filter((e) => !e.earlier).length, label: "internships" },
+  { value: projects.length, label: "projects built" },
+  {
+    value: clusters.filter((c) => c.name !== "Domains").reduce((n, c) => n + c.items.length, 0),
+    label: "tools & languages",
+  },
+  { value: profile.education.honors.length, label: "honors & awards" },
+];
 
 /** Distance from the center to the farthest node, used to fit the graph in the canvas. */
 const EXTENT = Math.max(...GRAPH.nodes.map((n) => Math.hypot(n.x, n.y, n.z)));
@@ -174,7 +185,7 @@ export function SkillGraph() {
       // Fit width to the spin plane and height to the tilted vertical extent;
       // 1.25 leaves room for near nodes that perspective enlarges
       const tallest = EXTENT_Y * Math.cos(pitch) + EXTENT_XZ * Math.abs(Math.sin(pitch));
-      const scale = Math.min(((width / 2) * 0.9) / EXTENT_XZ, ((height / 2) * 0.86) / tallest) / 1.08;
+      const scale = Math.min(((width / 2) * 0.9) / EXTENT_XZ, ((height / 2) * 0.86) / tallest) / 0.96;
       const cy = Math.cos(yaw);
       const sy = Math.sin(yaw);
       const cp = Math.cos(pitch);
@@ -220,7 +231,7 @@ export function SkillGraph() {
         [EXTENT_XZ * 0.62, 0.16],
         [EXTENT_XZ * 1.0, 0.09],
       ]) {
-        ctx!.strokeStyle = `rgba(182,195,240,${alpha})`;
+        ctx!.strokeStyle = `rgba(90,104,173,${alpha})`;
         ctx!.setLineDash([3, 6]);
         ctx!.beginPath();
         for (let k = 0; k <= 96; k++) {
@@ -240,7 +251,7 @@ export function SkillGraph() {
         const pb = projected[b];
         const lit = hovered >= 0 && (a === hovered || b === hovered);
         const alpha = depth((pa.z + pb.z) / 2) * (focus && !lit ? 0.25 : 1);
-        ctx!.strokeStyle = lit ? "rgba(244,168,150,0.95)" : `rgba(182,195,240,${0.35 * alpha})`;
+        ctx!.strokeStyle = lit ? "rgba(232,146,124,0.95)" : `rgba(82,90,120,${0.28 * alpha})`;
         ctx!.lineWidth = lit ? 1.6 : 1;
         ctx!.beginPath();
         ctx!.moveTo(pa.x, pa.y);
@@ -275,7 +286,7 @@ export function SkillGraph() {
         {
           const size = (n.kind === "leaf" ? 11 : n.kind === "hub" ? 12.5 : 14) * Math.max(0.8, Math.min(1.25, p.s));
           ctx!.font = `${n.kind === "leaf" ? 500 : 700} ${size}px Montserrat, system-ui, sans-serif`;
-          ctx!.fillStyle = n.kind === "leaf" ? "#e6ebfb" : "#fffbf7";
+          ctx!.fillStyle = n.kind === "leaf" ? "#525a78" : "#232a4a";
           if (n.kind === "leaf" && !isFocus) ctx!.globalAlpha = alpha * 0.85;
           ctx!.textAlign = "center";
           ctx!.fillText(n.label, p.x, p.y - r - 6);
@@ -362,17 +373,21 @@ export function SkillGraph() {
   }, []);
 
   return (
-    <figure className="graph" data-reveal>
-      <div className="graph__stage" ref={wrapRef}>
-        <canvas
-          ref={canvasRef}
-          role="img"
-          aria-label={`Graph of Sophia's skills: ${clusters.map((c) => `${c.name}: ${c.items.join(", ")}`).join("; ")}.`}
-        />
-      </div>
-      <figcaption className="graph__caption">
-        <span className="graph__title">my stack, as a graph</span>
-        <span className="graph__hint">drag to spin · hover a node</span>
+    <div className="graph">
+      <div className="graph__intro" data-reveal>
+        <p className="eyebrow">how it all connects</p>
+        <p className="graph__lead">
+          The languages, frameworks, and ML tools I've used across four internships and ten
+          projects, linked to the problem areas I've applied them to.
+        </p>
+        <dl className="graph__stats">
+          {stats.map((st) => (
+            <div key={st.label}>
+              <dt>{st.label}</dt>
+              <dd>{st.value}</dd>
+            </div>
+          ))}
+        </dl>
         <ul className="graph__legend">
           {clusters.map((c) => (
             <li key={c.name}>
@@ -381,7 +396,17 @@ export function SkillGraph() {
             </li>
           ))}
         </ul>
-      </figcaption>
-    </figure>
+        <p className="graph__hint">drag the graph to spin it · hover a node to trace its links</p>
+      </div>
+      <figure className="graph__figure" data-reveal>
+        <div className="graph__stage" ref={wrapRef}>
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={`Graph of Sophia's skills: ${clusters.map((c) => `${c.name}: ${c.items.join(", ")}`).join("; ")}.`}
+          />
+        </div>
+      </figure>
+    </div>
   );
 }

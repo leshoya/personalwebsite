@@ -6,6 +6,8 @@ export interface Project {
   tags: string[];
   metrics?: string[];
   link?: string;
+  /** What Sophia personally built on the project; shown on featured cards. */
+  role?: string;
   featured?: boolean;
   placeholder?: boolean;
 }
@@ -41,6 +43,8 @@ export const profile = {
   linkedin: "https://linkedin.com/in/sophial25",
   github: "https://github.com/leshoya",
   resume: "resume-sophia-lee.pdf",
+  /** Shown in the hero and contact section. */
+  availability: "Open to software engineering internships · Summer 2027",
   spotify: "https://open.spotify.com/user/dqef77t7y46kkq7gdcgmfiaai",
   /** Optional short audio clip in public/ (e.g. "audio/song.mp3") played while hovering the hero record. */
   songPreview: "",
@@ -224,6 +228,8 @@ export const projects: Project[] = [
     tags: ["FastAPI", "Angular", "Python", "Plotly.js", "Monte Carlo"],
     metrics: ["5,000 simulations", "Probability distributions"],
     link: "https://docs.google.com/presentation/d/1e2dp_mc0QCaTMK6bmSb1bOU5z3Rp2wNNRCoxRCCosjQ/edit?usp=drivesdk",
+    // TODO(sophia): draft, confirm what you personally built
+    role: "Built the FastAPI simulation service (CAPM returns and 5,000-run Monte Carlo) and the Angular + Plotly.js views that chart the median and 10th/90th percentile outcomes.",
     featured: true,
   },
   {
@@ -235,6 +241,8 @@ export const projects: Project[] = [
     tags: ["Flask", "React", "OpenAI", "Whisper"],
     metrics: ["200+ mock interviews", "70% less manual review"],
     link: "https://emergeai.us/",
+    // TODO(sophia): draft, confirm what you personally built
+    role: "Built the evaluation pipeline: Whisper transcribes each spoken answer, an OpenAI model scores it against a behavioral rubric, and the React client streams coaching back in real time.",
     featured: true,
   },
   {
@@ -246,6 +254,8 @@ export const projects: Project[] = [
     tags: ["Next.js", "React", "FastAPI", "Gemini", "ElevenLabs"],
     metrics: ["71+ instruments", "Speech-to-graph"],
     link: "https://www.youtube.com/watch?v=GQqYw9a_Mco",
+    // TODO(sophia): draft, confirm what you personally built
+    role: "Built the drag-and-drop composition canvas in React/Next.js and connected Gemini's instrument recommendations to the graph through the FastAPI backend.",
     featured: true,
   },
   {

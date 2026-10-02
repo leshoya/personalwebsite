@@ -126,6 +126,12 @@ export function Projects() {
                   <p className="card__org">{project.org}</p>
                   <h3 className="card__title">{project.title}</h3>
                   <p className="card__desc">{project.description}</p>
+                  {project.role && (
+                    <p className="card__role">
+                      <strong>My role</strong>
+                      {project.role}
+                    </p>
+                  )}
                   {project.metrics && (
                     <ul className="card__metrics">
                       {project.metrics.map((m) => (
