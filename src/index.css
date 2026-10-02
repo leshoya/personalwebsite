@@ -374,46 +374,127 @@ strong {
 }
 
 /* ─── Photos ─── */
-.photos {
+/* 3D skill graph (About) */
+.graph {
   margin-top: clamp(3.5rem, 8vw, 5.5rem);
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2.5vw, 1.75rem);
+  position: relative;
+  border-radius: calc(var(--radius) * 1.6);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(143, 159, 220, 0.22), transparent 60%),
+    linear-gradient(160deg, var(--navy) 0%, var(--navy-900) 60%, var(--navy-950) 100%);
+  box-shadow: 0 40px 60px -40px rgba(35, 42, 74, 0.6);
 }
 
-.photos__item img {
+.graph__stage {
+  height: clamp(22rem, 46vw, 32rem);
+}
+
+.graph__stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+.graph__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  padding: 1.25rem 1.5rem;
+  pointer-events: none;
+}
+
+.graph__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--cream);
+}
+
+.graph__hint {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--water-light);
+}
+
+.graph__legend {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.graph__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.graph__legend span {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+}
+
+/* Polaroid photos placed through the page */
+.polaroid {
+  padding: 0.75rem 0.75rem 0;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 30px 45px -28px rgba(35, 42, 74, 0.55);
+  transform: rotate(var(--tilt, -3deg));
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.03);
+}
+
+.polaroid img {
+  display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: var(--radius);
-  box-shadow: 0 30px 45px -30px rgba(35, 42, 74, 0.5);
+  border-radius: 2px;
 }
 
-.photos__item:nth-child(3) img {
-  object-position: top;
-}
-
-.photos__item figcaption {
-  position: relative;
-  margin-top: 0.75rem;
-  padding-left: 1.25rem;
+.polaroid figcaption {
+  padding: 0.75rem 0.25rem 0.9rem;
   font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: center;
   color: var(--ink-2);
 }
 
-.photos__item figcaption::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.4em;
-  width: 0.625rem;
-  height: 0.625rem;
-  border-radius: 50%;
-  border: 2px solid var(--coral-deep);
+.polaroid--award {
+  max-width: 20rem;
+  margin: 3rem auto 0;
 }
 
-/* ─── Experience timeline ─── */
+/* Experience: timeline with a column of photos beside it */
+.experience {
+  display: grid;
+  grid-template-columns: minmax(0, 52rem) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.experience__photos {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 4rem;
+  padding: 2rem 0;
+}
+
 .timeline {
   position: relative;
   display: grid;

@@ -1,0 +1,346 @@
+import { useEffect, useRef } from "react";
+
+/**
+ * Interactive 3D graph of skills: clusters of related tools orbit a center node.
+ * Rendered on a canvas with a hand-rolled perspective projection (no 3D library);
+ * auto-rotates while on screen, and can be dragged to spin.
+ */
+
+interface Cluster {
+  name: string;
+  color: string;
+  items: string[];
+}
+
+const clusters: Cluster[] = [
+  { name: "Languages", color: "#f4a896", items: ["Python", "Java", "C", "TypeScript", "JavaScript", "SQL"] },
+  { name: "Frameworks", color: "#8f9fdc", items: ["React", "Angular", "Spring Boot", "Node.js", "Flask", "FastAPI", "Next.js"] },
+  { name: "ML & AI", color: "#c2c1f2", items: ["PyTorch", "TensorFlow", "NumPy", "Pandas", "LLM APIs", "Gemini", "Whisper"] },
+  { name: "Tools", color: "#b6c3f0", items: ["Git", "Docker", "Linux", "CI/CD"] },
+  { name: "Domains", color: "#fbcab8", items: ["Healthcare ML", "FinTech", "AI Agents", "Music Tech"] },
+];
+
+/** Links between clusters, so the graph reads as one connected stack. */
+const crossLinks: [string, string][] = [
+  ["Python", "PyTorch"],
+  ["Python", "TensorFlow"],
+  ["Python", "Flask"],
+  ["Python", "FastAPI"],
+  ["TypeScript", "React"],
+  ["TypeScript", "Angular"],
+  ["Java", "Spring Boot"],
+  ["JavaScript", "Node.js"],
+  ["PyTorch", "Healthcare ML"],
+  ["FastAPI", "FinTech"],
+  ["SQL", "FinTech"],
+  ["LLM APIs", "AI Agents"],
+  ["Gemini", "Music Tech"],
+  ["Next.js", "Music Tech"],
+  ["Docker", "CI/CD"],
+];
+
+type Kind = "center" | "hub" | "leaf";
+
+interface GraphNode {
+  label: string;
+  kind: Kind;
+  color: string;
+  x: number;
+  y: number;
+  z: number;
+}
+
+/** Deterministic pseudo-random numbers so the layout is the same on every load. */
+function seeded(seed: number) {
+  return () => {
+    seed = (seed * 16807) % 2147483647;
+    return seed / 2147483647;
+  };
+}
+
+function buildGraph() {
+  const rand = seeded(42);
+  const nodes: GraphNode[] = [{ label: "Sophia", kind: "center", color: "#fffbf7", x: 0, y: 0, z: 0 }];
+  const edges: [number, number][] = [];
+  const index = new Map<string, number>();
+
+  clusters.forEach((cluster, ci) => {
+    // Hubs sit on a sphere (golden-angle spiral), leaves scatter around their hub
+    const t = (ci + 0.5) / clusters.length;
+    const phi = Math.acos(1 - 2 * t);
+    const theta = Math.PI * (1 + Math.sqrt(5)) * ci;
+    const R = 150;
+    const hub = {
+      x: R * Math.sin(phi) * Math.cos(theta),
+      y: R * Math.cos(phi),
+      z: R * Math.sin(phi) * Math.sin(theta),
+    };
+    const hubIndex = nodes.push({ label: cluster.name, kind: "hub", color: cluster.color, ...hub }) - 1;
+    edges.push([0, hubIndex]);
+
+    cluster.items.forEach((item) => {
+      const u = rand() * 2 - 1;
+      const a = rand() * Math.PI * 2;
+      const r = 55 + rand() * 35;
+      const s = Math.sqrt(1 - u * u);
+      const leafIndex =
+        nodes.push({
+          label: item,
+          kind: "leaf",
+          color: cluster.color,
+          // Push leaves outward from the center so clusters stay distinct
+          x: hub.x * 1.25 + r * s * Math.cos(a),
+          y: hub.y * 1.25 + r * u,
+          z: hub.z * 1.25 + r * s * Math.sin(a),
+        }) - 1;
+      index.set(item, leafIndex);
+      edges.push([hubIndex, leafIndex]);
+    });
+  });
+
+  for (const [a, b] of crossLinks) {
+    const ia = index.get(a);
+    const ib = index.get(b);
+    if (ia !== undefined && ib !== undefined) edges.push([ia, ib]);
+  }
+  return { nodes, edges };
+}
+
+const GRAPH = buildGraph();
+
+const NODE_RADIUS: Record<Kind, number> = { center: 9, hub: 7, leaf: 4 };
+
+export function SkillGraph() {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!wrap || !canvas || !ctx) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const neighbors = GRAPH.nodes.map(() => new Set<number>());
+    for (const [a, b] of GRAPH.edges) {
+      neighbors[a].add(b);
+      neighbors[b].add(a);
+    }
+
+    let width = 0;
+    let height = 0;
+    let yaw = 0.6;
+    let pitch = -0.25;
+    let spin = reduceMotion ? 0 : 0.0035;
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+    let velocity = 0;
+    let hovered = -1;
+    let pointer: { x: number; y: number } | null = null;
+    let visible = false;
+    let frame = 0;
+    let projected: { x: number; y: number; z: number; s: number }[] = [];
+
+    const resize = () => {
+      const rect = wrap.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    };
+
+    const project = () => {
+      const scale = Math.min(width, height * 1.6) / 560;
+      const cy = Math.cos(yaw);
+      const sy = Math.sin(yaw);
+      const cp = Math.cos(pitch);
+      const sp = Math.sin(pitch);
+      const camera = 520;
+      projected = GRAPH.nodes.map((n) => {
+        const x1 = n.x * cy - n.z * sy;
+        const z1 = n.x * sy + n.z * cy;
+        const y2 = n.y * cp - z1 * sp;
+        const z2 = n.y * sp + z1 * cp;
+        const s = camera / (camera + z2);
+        return { x: width / 2 + x1 * s * scale, y: height / 2 + y2 * s * scale, z: z2, s: s * scale };
+      });
+    };
+
+    const pick = () => {
+      if (!pointer) return -1;
+      let best = -1;
+      let bestDist = 18;
+      projected.forEach((p, i) => {
+        const d = Math.hypot(p.x - pointer!.x, p.y - pointer!.y);
+        if (d < bestDist) {
+          bestDist = d;
+          best = i;
+        }
+      });
+      return best;
+    };
+
+    function draw() {
+      if (!width || !height) return;
+      project();
+      hovered = dragging ? hovered : pick();
+      const focus = hovered >= 0 ? neighbors[hovered] : null;
+      const depth = (z: number) => Math.min(1, Math.max(0.18, 0.75 - z / 420));
+
+      ctx!.clearRect(0, 0, width, height);
+
+      // Edges, back to front
+      const edges = [...GRAPH.edges].sort((a, b) => projected[b[0]].z + projected[b[1]].z - projected[a[0]].z - projected[a[1]].z);
+      for (const [a, b] of edges) {
+        const pa = projected[a];
+        const pb = projected[b];
+        const lit = hovered >= 0 && (a === hovered || b === hovered);
+        const alpha = depth((pa.z + pb.z) / 2) * (focus && !lit ? 0.25 : 1);
+        ctx!.strokeStyle = lit ? "rgba(244,168,150,0.95)" : `rgba(182,195,240,${0.35 * alpha})`;
+        ctx!.lineWidth = lit ? 1.6 : 1;
+        ctx!.beginPath();
+        ctx!.moveTo(pa.x, pa.y);
+        ctx!.lineTo(pb.x, pb.y);
+        ctx!.stroke();
+      }
+
+      // Nodes and labels, back to front
+      const order = GRAPH.nodes.map((_, i) => i).sort((a, b) => projected[b].z - projected[a].z);
+      for (const i of order) {
+        const n = GRAPH.nodes[i];
+        const p = projected[i];
+        const isFocus = i === hovered || (focus?.has(i) ?? false);
+        const alpha = depth(p.z) * (focus && !isFocus ? 0.3 : 1);
+        const r = NODE_RADIUS[n.kind] * p.s * (i === hovered ? 1.5 : 1);
+
+        ctx!.globalAlpha = alpha;
+        if (n.kind !== "leaf") {
+          ctx!.fillStyle = n.color;
+          ctx!.globalAlpha = alpha * 0.18;
+          ctx!.beginPath();
+          ctx!.arc(p.x, p.y, r * 2.4, 0, Math.PI * 2);
+          ctx!.fill();
+          ctx!.globalAlpha = alpha;
+        }
+        ctx!.fillStyle = n.color;
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx!.fill();
+
+        const showLabel = n.kind !== "leaf" || isFocus || p.z < -40;
+        if (showLabel) {
+          const size = (n.kind === "leaf" ? 11 : n.kind === "hub" ? 12.5 : 14) * Math.max(0.8, Math.min(1.25, p.s));
+          ctx!.font = `${n.kind === "leaf" ? 500 : 700} ${size}px Montserrat, system-ui, sans-serif`;
+          ctx!.fillStyle = n.kind === "leaf" ? "#e6ebfb" : "#fffbf7";
+          ctx!.textAlign = "center";
+          ctx!.fillText(n.label, p.x, p.y - r - 6);
+        }
+      }
+      ctx!.globalAlpha = 1;
+      canvas!.style.cursor = dragging ? "grabbing" : hovered >= 0 ? "pointer" : "grab";
+    }
+
+    const tick = () => {
+      frame = 0;
+      if (!dragging) {
+        velocity *= 0.95;
+        yaw += spin + velocity;
+      }
+      draw();
+      if (visible && (spin || Math.abs(velocity) > 0.0001 || dragging)) frame = requestAnimationFrame(tick);
+    };
+    const start = () => {
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+
+    const onDown = (e: PointerEvent) => {
+      dragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      velocity = 0;
+      canvas.setPointerCapture(e.pointerId);
+      start();
+    };
+    const onMove = (e: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      if (dragging) {
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        yaw += dx * 0.008;
+        pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.006));
+        velocity = dx * 0.0008;
+      }
+      if (!frame) draw();
+    };
+    const onUp = (e: PointerEvent) => {
+      dragging = false;
+      if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+      start();
+    };
+    const onLeave = () => {
+      pointer = null;
+      if (!frame) draw();
+    };
+
+    canvas.addEventListener("pointerdown", onDown);
+    canvas.addEventListener("pointermove", onMove);
+    canvas.addEventListener("pointerup", onUp);
+    canvas.addEventListener("pointercancel", onUp);
+    canvas.addEventListener("pointerleave", onLeave);
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(wrap);
+
+    // Only animate while the graph is on screen
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) start();
+    });
+    io.observe(wrap);
+
+    // Redraw once web fonts load so labels use Montserrat
+    document.fonts?.ready.then(draw);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+      io.disconnect();
+      canvas.removeEventListener("pointerdown", onDown);
+      canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerup", onUp);
+      canvas.removeEventListener("pointercancel", onUp);
+      canvas.removeEventListener("pointerleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <figure className="graph" data-reveal>
+      <div className="graph__stage" ref={wrapRef}>
+        <canvas
+          ref={canvasRef}
+          role="img"
+          aria-label={`Graph of Sophia's skills: ${clusters.map((c) => `${c.name}: ${c.items.join(", ")}`).join("; ")}.`}
+        />
+      </div>
+      <figcaption className="graph__caption">
+        <span className="graph__title">my stack, as a graph</span>
+        <span className="graph__hint">drag to spin · hover a node</span>
+        <ul className="graph__legend">
+          {clusters.map((c) => (
+            <li key={c.name}>
+              <span style={{ background: c.color }} />
+              {c.name}
+            </li>
+          ))}
+        </ul>
+      </figcaption>
+    </figure>
+  );
+}

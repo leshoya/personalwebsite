@@ -1,7 +1,7 @@
-import type { CSSProperties } from "react";
 import { profile } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { Section } from "./Section";
+import { SkillGraph } from "./SkillGraph";
 import { Dots } from "./Shapes";
 
 function Portrait() {
@@ -62,24 +62,6 @@ const facts = [
   { label: "Interests", value: "Full-stack engineering, applied ML, healthcare tech" },
 ];
 
-const photos = [
-  {
-    src: publicPath("images/presenting.png"),
-    alt: "Sophia Lee presenting to a group",
-    caption: "Presenting project work",
-  },
-  {
-    src: publicPath("images/nc-workshop.png"),
-    alt: "Sophia Lee at an NC Department of Administration workshop",
-    caption: "NC Lady Cardinal Mentorship Program",
-  },
-  {
-    src: publicPath("images/award.png"),
-    alt: "Sophia Lee receiving the NCWIT Award for Aspirations in Computing",
-    caption: "NCWIT Aspirations in Computing Award",
-  },
-];
-
 export function About() {
   return (
     <Section
@@ -119,19 +101,7 @@ export function About() {
         </div>
       </div>
 
-      <div className="photos">
-        {photos.map((photo, i) => (
-          <figure
-            key={photo.src}
-            className="photos__item"
-            data-reveal
-            style={{ "--i": i } as CSSProperties}
-          >
-            <img src={photo.src} alt={photo.alt} loading="lazy" />
-            <figcaption>{photo.caption}</figcaption>
-          </figure>
-        ))}
-      </div>
+      <SkillGraph />
     </Section>
   );
 }

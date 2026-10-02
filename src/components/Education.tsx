@@ -1,5 +1,6 @@
 import { profile } from "../data/content";
 import { publicPath } from "../lib/publicPath";
+import { Polaroid } from "./Polaroid";
 import { Section } from "./Section";
 
 const skillGroups = [
@@ -48,6 +49,15 @@ export function Education() {
               </div>
             ))}
           </dl>
+
+          <Polaroid
+            src="images/award.png"
+            alt="Sophia Lee receiving the NCWIT Award for Aspirations in Computing"
+            caption="NCWIT Aspirations in Computing Award"
+            position="top"
+            tilt={-3}
+            className="polaroid--award"
+          />
         </div>
 
         <div data-reveal>

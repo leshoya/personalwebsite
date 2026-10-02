@@ -1,6 +1,7 @@
 import { experiences } from "../data/content";
 import type { Experience as Job } from "../data/content";
 import { publicPath } from "../lib/publicPath";
+import { Polaroid } from "./Polaroid";
 import { Section } from "./Section";
 
 const prefersReducedMotion =
@@ -62,6 +63,7 @@ export function Experience() {
         />
       }
     >
+      <div className="experience">
       <ol className="timeline">
         {main.map((exp) => (
           <li key={exp.id} className="timeline__item" data-reveal>
@@ -78,6 +80,22 @@ export function Experience() {
           </li>
         ))}
       </ol>
+
+      <aside className="experience__photos">
+        <Polaroid
+          src="images/presenting.png"
+          alt="Sophia Lee presenting to a group"
+          caption="presenting project work"
+          tilt={3}
+        />
+        <Polaroid
+          src="images/nc-workshop.png"
+          alt="Sophia Lee at an NC Department of Administration workshop"
+          caption="NC Lady Cardinal Mentorship Program"
+          tilt={-4}
+        />
+      </aside>
+      </div>
 
       <div className="earlier" data-reveal>
         <h3 className="earlier__title">Earlier programs</h3>
