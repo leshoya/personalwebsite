@@ -3,6 +3,7 @@ import type { Experience as Job } from "../data/content";
 import { publicPath } from "../lib/publicPath";
 import { Polaroid } from "./Polaroid";
 import { Section } from "./Section";
+import { Dots, Star } from "./Shapes";
 
 const prefersReducedMotion =
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -97,6 +98,7 @@ export function Experience() {
       </aside>
       </div>
 
+      <div className="earlier-row">
       <div className="earlier" data-reveal>
         <h3 className="earlier__title">Earlier programs</h3>
         <ul className="earlier__list">
@@ -110,6 +112,58 @@ export function Experience() {
           ))}
         </ul>
       </div>
+      <div className="earlier__aside">
+        <svg className="earlier__decor" viewBox="0 0 320 420" aria-hidden="true">
+          {/* Dashed trail that leads down toward the next section */}
+          <path
+            d="M250 40C320 120 300 230 200 300S40 360 20 420"
+            fill="none"
+            stroke="#8f9fdc"
+            strokeWidth="2"
+            strokeDasharray="2 9"
+            strokeLinecap="round"
+          />
+          <circle cx="40" cy="70" r="26" fill="none" stroke="#f4a896" strokeWidth="9" />
+          <circle cx="290" cy="330" r="14" fill="none" stroke="#b6c3f0" strokeWidth="2.5" />
+          <Dots x={250} y={14} cols={3} rows={2} gap={14} size={3.5} />
+          <Dots x={18} y={300} cols={2} rows={3} gap={14} size={3.5} fill="#e8927c" />
+          <g className="float float--slow">
+            <Star x={286} y={70} kind="big" size={0.9} rotate={12} />
+          </g>
+          <g className="float">
+            <Star x={60} y={385} kind="small" size={1.6} rotate={-14} />
+          </g>
+        </svg>
+        <Polaroid
+          src="images/award.png"
+          alt="Sophia Lee receiving the NCWIT Award for Aspirations in Computing"
+          caption="NCWIT Aspirations in Computing Award"
+          position="top"
+          tilt={4}
+        />
+      </div>
+      </div>
+
+      {/* Small accents that bridge the gap into the next section */}
+      <svg className="section-bridge" viewBox="0 0 1200 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <path
+          d="M0 120C200 40 380 150 600 90S960 20 1200 80"
+          fill="none"
+          stroke="#b6c3f0"
+          strokeWidth="1.5"
+          strokeDasharray="1 10"
+          strokeLinecap="round"
+        />
+        <g className="float">
+          <Star x={210} y={70} kind="small" size={1.3} rotate={10} />
+        </g>
+        <g className="float float--alt">
+          <Star x={980} y={50} kind="big" size={0.7} rotate={-10} />
+        </g>
+        <Dots x={560} y={112} cols={3} gap={14} size={3.5} fill="#e8927c" />
+        <circle cx="760" cy="60" r="9" fill="none" stroke="#f4a896" strokeWidth="4" />
+        <circle cx="420" cy="125" r="5" fill="#8f9fdc" />
+      </svg>
     </Section>
   );
 }

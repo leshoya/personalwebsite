@@ -170,8 +170,66 @@ strong {
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.nav__brand:hover .nav__badge {
+.greet__button:hover .nav__badge,
+.greet__button:focus-visible .nav__badge {
   transform: rotate(-10deg) scale(1.06);
+}
+
+.greet__button:active .nav__badge {
+  transform: rotate(6deg) scale(0.94);
+}
+
+/* Snoopy's speech bubbles */
+.greet {
+  position: relative;
+  display: inline-flex;
+}
+
+.greet__button {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.greet__bubble {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 0.75rem);
+  left: 0.25rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 1rem;
+  background: var(--cream);
+  box-shadow: 0 14px 30px -12px rgba(21, 26, 51, 0.6);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--navy);
+  transform-origin: 1.25rem -0.5rem;
+  animation: greet-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+/* Tail pointing up at Snoopy */
+.greet__bubble::before {
+  content: "";
+  position: absolute;
+  top: -0.45rem;
+  left: 1.1rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: var(--cream);
+  border-radius: 0.15rem;
+  transform: rotate(45deg);
+}
+
+@keyframes greet-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(-4px);
+  }
 }
 
 .nav__links {
@@ -374,36 +432,53 @@ strong {
 }
 
 /* ─── Photos ─── */
-/* 3D skill graph (About): drawn straight onto the page, bleeding to the screen edges */
+/* 3D skill graph (About): intro + stats on the left, graph drawn straight onto the page on the right */
 .graph {
   margin-top: clamp(3.5rem, 8vw, 5.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
 }
 
-.graph__caption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.5rem 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--rule);
-}
-
-.graph__title {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+.graph__lead {
+  margin-top: 0.75rem;
+  font-size: 1.0625rem;
+  line-height: 1.6;
   color: var(--ink);
 }
 
-.graph__hint {
+.graph__stats {
+  margin-top: 1.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 2px solid var(--ink);
+}
+
+.graph__stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.graph__stats dd {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.graph__stats dt {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--water-deep);
 }
 
 .graph__legend {
-  margin-left: auto;
+  margin-top: 1.5rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem 1rem;
@@ -424,12 +499,20 @@ strong {
   border-radius: 50%;
 }
 
-/* Full-bleed stage that fades out at its edges instead of ending in a hard box */
+.graph__hint {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--water-deep);
+}
+
+/* The stage runs out to the right edge of the screen and fades out instead of ending in a box */
 .graph__stage {
-  height: clamp(22rem, 40vw, 30rem);
-  margin-inline: calc(-1 * var(--edge));
-  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, #000 55%, transparent 100%);
-  mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, #000 55%, transparent 100%);
+  height: clamp(22rem, 38vw, 30rem);
+  margin-right: calc(-1 * var(--edge));
+  -webkit-mask-image: radial-gradient(ellipse 62% 68% at 50% 50%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 62% 68% at 50% 50%, #000 58%, transparent 100%);
 }
 
 .graph__stage canvas {
@@ -1541,8 +1624,13 @@ strong {
   }
 
   .about,
-  .background {
+  .background,
+  .graph {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .graph__stage {
+    margin-inline: calc(-1 * var(--edge));
   }
 
   .about__portrait {
