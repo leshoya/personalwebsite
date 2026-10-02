@@ -6,6 +6,8 @@ export interface Project {
   tags: string[];
   metrics?: string[];
   link?: string;
+  /** Public source repository; only set when the repo is public and backs up the card. */
+  repo?: string;
   /** What Sophia personally built on the project; shown on featured cards. */
   role?: string;
   featured?: boolean;
@@ -237,12 +239,11 @@ export const projects: Project[] = [
     title: "eMerge AI",
     org: "The Cube LLC Buildathon · 3rd Overall",
     description:
-      "End-to-end AI interview simulation platform with real-time voice interaction, transcript analysis, automated scoring, and personalized feedback across 200+ mock interviews. The backend evaluation pipeline scores behavioral responses and generates real-time coaching, reducing manual review effort by 70%.",
-    tags: ["Flask", "React", "OpenAI", "Whisper"],
-    metrics: ["200+ mock interviews", "70% less manual review"],
+      "AI mock-interview platform for students breaking into product management and consulting. Candidates set up a session, answer questions in an interview room with a live transcript, then review a feedback dashboard that breaks down structure, clarity, and delivery.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    metrics: ["3rd overall", "Live at emergeai.us"],
     link: "https://emergeai.us/",
-    // TODO(sophia): draft, confirm what you personally built
-    role: "Built the evaluation pipeline: Whisper transcribes each spoken answer, an OpenAI model scores it against a behavioral rubric, and the React client streams coaching back in real time.",
+    role: "Designed and built the front end in Next.js and TypeScript: the interview setup flow, the interview room with avatar and live transcript, and the feedback dashboard.",
     featured: true,
   },
   {
@@ -254,6 +255,7 @@ export const projects: Project[] = [
     tags: ["Next.js", "React", "FastAPI", "Gemini", "ElevenLabs"],
     metrics: ["71+ instruments", "Speech-to-graph"],
     link: "https://www.youtube.com/watch?v=GQqYw9a_Mco",
+    repo: "https://github.com/maxx06/hackharvard2025",
     // TODO(sophia): draft, confirm what you personally built
     role: "Built the drag-and-drop composition canvas in React/Next.js and connected Gemini's instrument recommendations to the graph through the FastAPI backend.",
     featured: true,

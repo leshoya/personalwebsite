@@ -16,7 +16,7 @@ interface Cluster {
 const clusters: Cluster[] = [
   { name: "Languages", color: "#e8927c", items: ["Python", "Java", "C", "TypeScript", "JavaScript", "SQL"] },
   { name: "Frameworks", color: "#5a68ad", items: ["React", "Angular", "Spring Boot", "Node.js", "Flask", "FastAPI", "Next.js"] },
-  { name: "ML & AI", color: "#9d9be0", items: ["PyTorch", "TensorFlow", "NumPy", "Pandas", "LLM APIs", "Gemini", "Whisper"] },
+  { name: "ML & AI", color: "#9d9be0", items: ["PyTorch", "TensorFlow", "NumPy", "Pandas", "LLM APIs", "Gemini"] },
   { name: "Tools", color: "#8f9fdc", items: ["Git", "Docker", "Linux", "CI/CD"] },
   { name: "Domains", color: "#f4a896", items: ["Healthcare ML", "FinTech", "AI Agents", "Music Tech"] },
 ];

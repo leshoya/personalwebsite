@@ -69,20 +69,25 @@ function ProjectsArt() {
   );
 }
 
-function ExternalLink({ project }: { project: Project }) {
-  if (!project.link) return null;
+function OutLink({ href, children }: { href: string; children: string }) {
   return (
-    <a
-      href={project.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="card__link"
-    >
-      View project
+    <a href={href} target="_blank" rel="noopener noreferrer" className="card__link">
+      {children}
       <svg viewBox="0 0 12 12" aria-hidden="true">
         <path d="M3.5 8.5l5-5M4.5 3.5h4v4" />
       </svg>
     </a>
+  );
+}
+
+/** The card's outbound links: the live project and, when public, its source code. */
+function ProjectLinks({ project }: { project: Project }) {
+  if (!project.link && !project.repo) return null;
+  return (
+    <div className="card__links">
+      {project.link && <OutLink href={project.link}>View project</OutLink>}
+      {project.repo && <OutLink href={project.repo}>Code</OutLink>}
+    </div>
   );
 }
 
@@ -140,7 +145,7 @@ export function Projects() {
                     </ul>
                   )}
                   <p className="card__tags">{project.tags.join(" · ")}</p>
-                  <ExternalLink project={project} />
+                  <ProjectLinks project={project} />
                 </div>
               </article>
             </div>

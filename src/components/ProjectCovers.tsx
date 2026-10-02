@@ -404,7 +404,7 @@ function EmergeCover() {
       <g className="em-pop">
         <rect x="64" y="139" width="34" height="5.4" rx="1.5" fill="#f4a896" fillOpacity="0.55" />
         <text x="66" y="142.9" fontSize="3.4" fontWeight="700" fill="#232a4a">
-          cut review time 70%
+          led a team of five
         </text>
       </g>
       <rect x="22" y="164" width="52" height="12" rx="6" fill="#232a4a" />
@@ -442,7 +442,7 @@ function EmergeCover() {
         Strong answer
       </text>
       <text x="201" y="65.5" fontSize="3.8" fill="#525a78">
-        Top 8% across 200+ mock interviews
+        Structure, clarity, and delivery
       </text>
 
       {rubric.map((r, i) => {
