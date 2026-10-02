@@ -65,15 +65,13 @@ function buildGraph() {
   const index = new Map<string, number>();
 
   clusters.forEach((cluster, ci) => {
-    // Hubs sit on a sphere (golden-angle spiral), leaves scatter around their hub
-    const t = (ci + 0.5) / clusters.length;
-    const phi = Math.acos(1 - 2 * t);
-    const theta = Math.PI * (1 + Math.sqrt(5)) * ci;
+    // Hubs sit evenly around a tilted ring (alternating up/down), leaves scatter around their hub
+    const theta = (ci / clusters.length) * Math.PI * 2;
     const R = 150;
     const hub = {
-      x: R * Math.sin(phi) * Math.cos(theta),
-      y: R * Math.cos(phi),
-      z: R * Math.sin(phi) * Math.sin(theta),
+      x: R * Math.cos(theta),
+      y: (ci % 2 === 0 ? -1 : 1) * 40,
+      z: R * Math.sin(theta),
     };
     const hubIndex = nodes.push({ label: cluster.name, kind: "hub", color: cluster.color, ...hub }) - 1;
     edges.push([0, hubIndex]);
@@ -81,7 +79,7 @@ function buildGraph() {
     cluster.items.forEach((item) => {
       const u = rand() * 2 - 1;
       const a = rand() * Math.PI * 2;
-      const r = 55 + rand() * 35;
+      const r = 50 + rand() * 35;
       const s = Math.sqrt(1 - u * u);
       const leafIndex =
         nodes.push({
@@ -89,9 +87,10 @@ function buildGraph() {
           kind: "leaf",
           color: cluster.color,
           // Push leaves outward from the center so clusters stay distinct
-          x: hub.x * 1.25 + r * s * Math.cos(a),
-          y: hub.y * 1.25 + r * u,
-          z: hub.z * 1.25 + r * s * Math.sin(a),
+          x: hub.x * 1.3 + r * s * Math.cos(a),
+          // Flattened vertically so the graph suits a wide panel
+          y: hub.y * 1.3 + r * u * 0.6,
+          z: hub.z * 1.3 + r * s * Math.sin(a),
         }) - 1;
       index.set(item, leafIndex);
       edges.push([hubIndex, leafIndex]);
@@ -107,6 +106,12 @@ function buildGraph() {
 }
 
 const GRAPH = buildGraph();
+
+/** Distance from the center to the farthest node, used to fit the graph in the canvas. */
+const EXTENT = Math.max(...GRAPH.nodes.map((n) => Math.hypot(n.x, n.y, n.z)));
+/** Horizontal (spin-plane) and vertical extents, for fitting width and height separately. */
+const EXTENT_XZ = Math.max(...GRAPH.nodes.map((n) => Math.hypot(n.x, n.z)));
+const EXTENT_Y = Math.max(...GRAPH.nodes.map((n) => Math.abs(n.y)));
 
 const NODE_RADIUS: Record<Kind, number> = { center: 9, hub: 7, leaf: 4 };
 
@@ -130,7 +135,7 @@ export function SkillGraph() {
     let width = 0;
     let height = 0;
     let yaw = 0.6;
-    let pitch = -0.25;
+    let pitch = -0.38;
     let spin = reduceMotion ? 0 : 0.0035;
     let dragging = false;
     let lastX = 0;
@@ -141,6 +146,18 @@ export function SkillGraph() {
     let visible = false;
     let frame = 0;
     let projected: { x: number; y: number; z: number; s: number }[] = [];
+    let view = { scale: 1, cy: 1, sy: 0, cp: 1, sp: 0, camera: 1 };
+
+    /** Project an arbitrary 3D point with the current view. */
+    const toScreen = (x: number, y: number, z: number) => {
+      const { scale, cy, sy, cp, sp, camera } = view;
+      const x1 = x * cy - z * sy;
+      const z1 = x * sy + z * cy;
+      const y2 = y * cp - z1 * sp;
+      const z2 = y * sp + z1 * cp;
+      const s = camera / (camera + z2);
+      return [width / 2 + x1 * s * scale, height / 2 + y2 * s * scale] as const;
+    };
 
     const resize = () => {
       const rect = wrap.getBoundingClientRect();
@@ -154,12 +171,16 @@ export function SkillGraph() {
     };
 
     const project = () => {
-      const scale = Math.min(width, height * 1.6) / 560;
+      // Fit width to the spin plane and height to the tilted vertical extent;
+      // 1.25 leaves room for near nodes that perspective enlarges
+      const tallest = EXTENT_Y * Math.cos(pitch) + EXTENT_XZ * Math.abs(Math.sin(pitch));
+      const scale = Math.min(((width / 2) * 0.9) / EXTENT_XZ, ((height / 2) * 0.86) / tallest) / 1.08;
       const cy = Math.cos(yaw);
       const sy = Math.sin(yaw);
       const cp = Math.cos(pitch);
       const sp = Math.sin(pitch);
-      const camera = 520;
+      const camera = EXTENT * 4;
+      view = { scale, cy, sy, cp, sp, camera };
       projected = GRAPH.nodes.map((n) => {
         const x1 = n.x * cy - n.z * sy;
         const z1 = n.x * sy + n.z * cy;
@@ -189,9 +210,28 @@ export function SkillGraph() {
       project();
       hovered = dragging ? hovered : pick();
       const focus = hovered >= 0 ? neighbors[hovered] : null;
-      const depth = (z: number) => Math.min(1, Math.max(0.18, 0.75 - z / 420));
+      const depth = (z: number) => Math.min(1, Math.max(0.2, 0.7 - z / (EXTENT * 2.2)));
 
       ctx!.clearRect(0, 0, width, height);
+
+      // Faint orbit rings around the center give the rotation a sense of depth
+      ctx!.lineWidth = 1;
+      for (const [radius, alpha] of [
+        [EXTENT_XZ * 0.62, 0.16],
+        [EXTENT_XZ * 1.0, 0.09],
+      ]) {
+        ctx!.strokeStyle = `rgba(182,195,240,${alpha})`;
+        ctx!.setLineDash([3, 6]);
+        ctx!.beginPath();
+        for (let k = 0; k <= 96; k++) {
+          const a = (k / 96) * Math.PI * 2;
+          const [x, y] = toScreen(radius * Math.cos(a), 0, radius * Math.sin(a));
+          if (k === 0) ctx!.moveTo(x, y);
+          else ctx!.lineTo(x, y);
+        }
+        ctx!.stroke();
+      }
+      ctx!.setLineDash([]);
 
       // Edges, back to front
       const edges = [...GRAPH.edges].sort((a, b) => projected[b[0]].z + projected[b[1]].z - projected[a[0]].z - projected[a[1]].z);
@@ -231,11 +271,12 @@ export function SkillGraph() {
         ctx!.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx!.fill();
 
-        const showLabel = n.kind !== "leaf" || isFocus || p.z < -40;
-        if (showLabel) {
+        // Every node is labelled; labels toward the back fade with depth
+        {
           const size = (n.kind === "leaf" ? 11 : n.kind === "hub" ? 12.5 : 14) * Math.max(0.8, Math.min(1.25, p.s));
           ctx!.font = `${n.kind === "leaf" ? 500 : 700} ${size}px Montserrat, system-ui, sans-serif`;
           ctx!.fillStyle = n.kind === "leaf" ? "#e6ebfb" : "#fffbf7";
+          if (n.kind === "leaf" && !isFocus) ctx!.globalAlpha = alpha * 0.85;
           ctx!.textAlign = "center";
           ctx!.fillText(n.label, p.x, p.y - r - 6);
         }
