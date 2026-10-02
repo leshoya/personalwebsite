@@ -223,15 +223,14 @@ export const experiences: Experience[] = [
 export const projects: Project[] = [
   {
     id: "mutual-fund",
-    title: "Mutual Fund Decision Platform",
-    org: "Goldman Sachs",
+    title: "Monte Carlo Mutual Fund Simulator",
+    org: "Goldman Sachs Emerging Leaders Series",
     description:
-      "Full-stack investment dashboard with FastAPI and Angular. CAPM and 5,000-run Monte Carlo simulations return full outcome distributions; Plotly.js charts show median and 10th/90th percentile scenarios. Includes a multi-scenario market simulator and AI tools to unify fragmented financial resources.",
-    tags: ["FastAPI", "Angular", "Python", "Plotly.js", "Monte Carlo"],
-    metrics: ["5,000 simulations", "Probability distributions"],
+      "Python Monte Carlo simulation engine that generates thousands of potential mutual fund return paths from historical return and volatility distributions, with portfolio risk analytics comparing expected returns, downside risk, and investment outcomes across configurable time horizons and market assumptions.",
+    tags: ["Python", "NumPy", "Pandas", "Monte Carlo"],
+    metrics: ["Thousands of return paths", "Downside-risk analytics"],
     link: "https://docs.google.com/presentation/d/1e2dp_mc0QCaTMK6bmSb1bOU5z3Rp2wNNRCoxRCCosjQ/edit?usp=drivesdk",
-    // TODO(sophia): draft, confirm what you personally built
-    role: "Built the FastAPI simulation service (CAPM returns and 5,000-run Monte Carlo) and the Angular + Plotly.js views that chart the median and 10th/90th percentile outcomes.",
+    role: "Built the Monte Carlo engine in NumPy and Pandas, and developed the portfolio risk analytics that compare returns and downside risk across time horizons and market assumptions.",
     featured: true,
   },
   {
@@ -239,11 +238,11 @@ export const projects: Project[] = [
     title: "eMerge AI",
     org: "The Cube LLC Buildathon · 3rd Overall",
     description:
-      "AI mock-interview platform for students breaking into product management and consulting. Candidates set up a session, answer questions in an interview room with a live transcript, then review a feedback dashboard that breaks down structure, clarity, and delivery.",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    metrics: ["3rd overall", "Live at emergeai.us"],
+      "End-to-end AI interview simulation platform integrating real-time voice interaction, transcript analysis, automated scoring, and personalized feedback across 200+ mock interviews. The backend evaluation pipeline processes transcripts, scores behavioral responses, and generates real-time coaching recommendations.",
+    tags: ["Flask", "React", "OpenAI APIs"],
+    metrics: ["200+ mock interviews", "70% less manual review"],
     link: "https://emergeai.us/",
-    role: "Designed and built the front end in Next.js and TypeScript: the interview setup flow, the interview room with avatar and live transcript, and the feedback dashboard.",
+    role: "Engineered the platform end to end and designed the backend evaluation pipeline that scores responses and generates coaching, reducing manual review effort by 70%.",
     featured: true,
   },
   {
@@ -292,7 +291,7 @@ export const projects: Project[] = [
     title: "Sleep Signaling",
     org: "MIT Medlytics",
     description:
-      "Biosignal analysis with FFT transformations and transfer learning for REM sleep stage classification.",
+      "REM sleep stage classification from public Kaggle biosignal datasets, using FFT transformations and transfer learning.",
     tags: ["FFT", "Transfer Learning", "Biosignals"],
     metrics: ["97% binary accuracy", "93% multiclass accuracy"],
   },
