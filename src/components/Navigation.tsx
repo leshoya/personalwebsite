@@ -10,7 +10,6 @@ const links = [
 
 /** What Snoopy says, one per click, in order. */
 const greetings = [
-  "nǐ hǎo! 你好",
   "hi there!",
   "welcome to my site :)",
   "hola!",
@@ -20,6 +19,8 @@ const greetings = [
   "hope your day's going well!",
   "konnichiwa! こんにちは",
   "ok, back to the website →",
+  "nǐ hǎo! 你好",
+
 ];
 
 /** Snoopy badge: click for a speech bubble with the next greeting. */
