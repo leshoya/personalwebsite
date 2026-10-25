@@ -48,7 +48,7 @@ export const profile = {
   github: "https://github.com/leshoya",
   resume: "resume-sophia-lee.pdf",
   /** Shown in the hero and contact section. */
-  availability: "Open to software engineering internships · Summer 2027",
+  availability: "Open to software engineering internships · Summer 2027 · U.S. citizen",
   spotify: "https://open.spotify.com/user/dqef77t7y46kkq7gdcgmfiaai",
   /** Optional short audio clip in public/ (e.g. "audio/song.mp3") played while hovering the hero record. */
   songPreview: "",
