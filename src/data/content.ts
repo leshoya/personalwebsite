@@ -22,6 +22,8 @@ export interface Experience {
   location?: string;
   highlights: string[];
   earlier?: boolean;
+  /** A role that hasn't started yet; shown with an "incoming" tag and left out of counts. */
+  upcoming?: boolean;
   /** Screen recording shown under the highlights; `link` defaults to the video file itself. */
   demo?: { video: string; caption: string; link?: string };
 }
@@ -136,6 +138,15 @@ export const profile = {
 };
 
 export const experiences: Experience[] = [
+  {
+    id: "ibm",
+    upcoming: true,
+    role: "Software Developer Co-op",
+    company: "IBM",
+    period: "January 2027 – May 2027",
+    location: "Durham, NC",
+    highlights: ["Incoming Spring 2027 software developer co-op, based in Durham, NC."],
+  },
   {
     id: "metlife",
     role: "Software Engineer Intern",

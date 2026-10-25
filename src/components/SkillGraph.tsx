@@ -109,7 +109,7 @@ function buildGraph() {
 const GRAPH = buildGraph();
 
 const stats = [
-  { value: experiences.filter((e) => !e.earlier).length, label: "internships" },
+  { value: experiences.filter((e) => !e.earlier && !e.upcoming).length, label: "internships" },
   { value: projects.length, label: "projects built" },
   {
     value: clusters.filter((c) => c.name !== "Domains").reduce((n, c) => n + c.items.length, 0),
