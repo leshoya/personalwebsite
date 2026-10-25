@@ -20,7 +20,6 @@ const greetings = [
   "konnichiwa! こんにちは",
   "ok, back to the website →",
   "nǐ hǎo! 你好",
-
 ];
 
 /** Snoopy badge: click for a speech bubble with the next greeting. */

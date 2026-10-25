@@ -69,7 +69,10 @@ export function Experience() {
         {main.map((exp) => (
           <li key={exp.id} className="timeline__item" data-reveal>
             <span className="timeline__node" aria-hidden="true" />
-            <p className="timeline__period">{exp.period}</p>
+            <p className="timeline__period">
+              {exp.period}
+              {exp.upcoming && <span className="timeline__tag">incoming</span>}
+            </p>
             <h3 className="timeline__role">{exp.role}</h3>
             <p className="timeline__company">{exp.company}</p>
             <ul className="timeline__list">
